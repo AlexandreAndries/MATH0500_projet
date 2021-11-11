@@ -23,7 +23,40 @@
 /*----------------------------------------------------------------------------*/
 /*----------------------------STRUCTURES DE DONNEES---------------------------*/
 /*----------------------------------------------------------------------------*/
-
+/**
+ * \struct NZ_Element
+ * \brief Structure de données représentant les informations d'un élément
+ *        non-nul d'une matrice.
+ *        NZ_Element contient trois informations :
+ *
+ *        - row : le numéro de la ligne de l'élément dans la matrice.
+ *        - col : le numéro de la colonne de l'élément dans la matrice.
+ *        - val : la valeur de l'élément.
+ *
+ */
+typedef struct{
+  unsigned int row;
+  unsigned int col;
+  long val;
+}NZ_Element;
+/*----------------------------------------------------------------------------*/
+/**
+ * \struct Mtx
+ * \brief Structure de données représentant une matrice creuse
+ *        Mtx contient trois informations et un tableau:
+ *
+ *        - nRows : le nombre de lignes de la matrice.
+ *        - nCols : le nombre de colonnes de la matrice.
+ *        - nonZeros : le nombre d'éléments non-nuls dans la matrice.
+ *        -
+ *
+ */
+typedef struct{
+  unsigned int nRows;
+  unsigned int nCols;
+  unsigned int nonZeros;
+  
+}Mtx;
 /*----------------------------------------------------------------------------*/
 /*----------------------------FONCTIONS & PROCEDURES--------------------------*/
 /*----------------------------------------------------------------------------*/
