@@ -48,14 +48,14 @@ typedef struct{
  *        - nRows : le nombre de lignes de la matrice.
  *        - nCols : le nombre de colonnes de la matrice.
  *        - nonZeros : le nombre d'éléments non-nuls dans la matrice.
- *        -
+ *        - **elements : tableau contenant les éléments non-nuls de la matrice
  *
  */
 typedef struct{
   unsigned int nRows;
   unsigned int nCols;
   unsigned int nonZeros;
-  
+  NZ_Element **elements;
 }Mtx;
 /*----------------------------------------------------------------------------*/
 /*----------------------------FONCTIONS & PROCEDURES--------------------------*/
