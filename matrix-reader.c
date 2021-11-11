@@ -14,11 +14,54 @@
  */
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
+
+#include "matrix-reader.h"
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------FONCTIONS & PROCEDURES--------------------------*/
 /*----------------------------------------------------------------------------*/
+// void manage_arguments(int argc, char *argv[], const char *optstring){};
+/*----------------------------------------------------------------------------*/
+void ignore_com(FILE *filename){
+  assert(filename != NULL);
 
+  char c ;
+  fscanf(filename, "%c", &c);
+  if(c == '%'){
+    fscanf(filename, "%*[^\n]\n");
+  }
+}
+/*----------------------------------------------------------------------------*/
+void get_mtx_dimensions(Mtx *mtx, FILE *fp){
+  assert(mtx != NULL && fp != NULL);
+
+  while(fscanf(fp, "%d %d %d", &mtx->nRows, &mtx->nCols, &mtx->nonZeros)!=3){
+    ignore_com(fp);
+  }
+}
+/*----------------------------------------------------------------------------*/
+int read_mtx(Mtx **matrix, char *filename){
+  assert(filename != NULL);
+
+  FILE *fp;
+  fp = fopen(filename, "r");
+  if(fp == NULL){
+    return -1;
+  }
+
+  Mtx *mtx = (Mtx*)malloc(sizeof(Mtx));
+  if(mtx == NULL){
+    fclose(fp);
+    return -2;
+  }
+
+  get_mtx_dimensions(mtx, fp);
+
+  *matrix = mtx;
+  fclose(fp);
+  return 0;
+}
 /*----------------------------------------------------------------------------*/
 /*--------------------------------FIN DU MODULE-------------------------------*/
 /*----------------------------------------------------------------------------*/
