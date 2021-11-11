@@ -1,5 +1,5 @@
 /**
- * \file main.c
+ * \file matrix-reader.h
  *
  *
  * \brief MATH0500 - Projet
@@ -8,23 +8,17 @@
  * \version 0.1
  * \date 10/11/2021
  *
- * Ce fichier contient le programmme principal (main)
+ * Ce fichier contient contient les définitions des fonctions pour la lecture
+ * de matrices en input du programme. La lecture des fichiers .mtx entrés
+ * permets de créer la matrice creuse et le vecteur creux correspondants.
  */
-
 #include <stdlib.h>
 #include <stdio.h>
-#include <assert.h>
-#include <string.h>
-#include <unistd.h>
-#include <ctype.h>
-#include <getopt.h>
 
 /*----------------------------------------------------------------------------*/
-/*---------------------------------MAIN PROGRAM-------------------------------*/
+/*----------------------------FONCTIONS & PROCEDURES--------------------------*/
 /*----------------------------------------------------------------------------*/
-int main(int argc, char *argv[]){
 
-} //fin main()
 /*----------------------------------------------------------------------------*/
-/*----------------------------------FIN DU MAIN-------------------------------*/
+/*--------------------------------FIN DU MODULE-------------------------------*/
 /*----------------------------------------------------------------------------*/
