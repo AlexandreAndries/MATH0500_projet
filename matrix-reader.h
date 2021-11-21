@@ -28,38 +28,42 @@
 /*----------------------------STRUCTURES DE DONNEES---------------------------*/
 /*----------------------------------------------------------------------------*/
 /**
- * \struct NZ_Element
- * \brief Structure de données représentant les informations d'un élément
- *        non-nul d'une matrice.
- *        NZ_Element contient trois informations :
+ * \struct Array
+ * \brief Structure de données représentant un vecteur contenant les données
+ *        d'une matrice creuse sous forme "column compressed".
+ *        Array contient trois informations :
  *
- *        - row : le numéro de la ligne de l'élément dans la matrice.
- *        - col : le numéro de la colonne de l'élément dans la matrice.
- *        - val : la valeur de l'élément.
+ *        - cap : la capacité du vecteur (nombre max d'éléments qu'il peut
+ *                contenir dans la mémoire). Peut être augmenter par realloc.
+ *        - size : le nombre d'éléments contenu dans le vecteur.
+ *        - *val : le tableau représentant le vecteur en tant que tel.
  *
  */
 typedef struct{
-  unsigned int row;
-  unsigned int col;
-  long val;
-}NZ_Element;
+  unsigned int cap;
+  unsigned int size;
+  double *val;
+}Array;
 /*----------------------------------------------------------------------------*/
 /**
  * \struct Mtx
- * \brief Structure de données représentant une matrice creuse
- *        Mtx contient trois informations et un tableau:
+ * \brief Structure de données représentant une matrice creuse sous forme
+ *        "column compressed".
+ *        Mtx contient trois structures Array et deux informations:
  *
- *        - nRows : le nombre de lignes de la matrice.
- *        - nCols : le nombre de colonnes de la matrice.
- *        - nonZeros : le nombre d'éléments non-nuls dans la matrice.
- *        - **elements : tableau contenant les éléments non-nuls de la matrice
+ *        - *pCols : les indices de début de chaque colonnes dans iLines.
+ *        - *iLines : les indices de lignes de chaque élément dans xVals.
+ *        - *xVals : les valeurs des éléments non-nuls de la matrice.
+ *        - nz : le nombre d'élément non-nul dans la matrice creuse.
+ *        - dim : la dimension de la matrice creuse (matrice carrée).
  *
  */
 typedef struct{
-  unsigned int nRows;
-  unsigned int nCols;
-  unsigned int nonZeros;
-  NZ_Element **elements;
+  Array *pCols ;
+  Array *iLines ;
+  Array *xVals ;
+  unsigned int nz;
+  unsigned int dim;
 }Mtx;
 /*----------------------------------------------------------------------------*/
 /*----------------------------FONCTIONS & PROCEDURES--------------------------*/
