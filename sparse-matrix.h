@@ -29,7 +29,26 @@
 /*----------------------------------------------------------------------------*/
 /*----------------------------STRUCTURES DE DONNEES---------------------------*/
 /*----------------------------------------------------------------------------*/
-
+/**
+ * \struct Mtx
+ * \brief Structure de données représentant une matrice creuse sous forme
+ *        "column compressed".
+ *        Mtx contient trois structures Array et deux informations:
+ *
+ *        - *pCols : les indices de début de chaque colonnes dans iLines.
+ *        - *iLines : les indices de lignes de chaque élément dans xVals.
+ *        - *xVals : les valeurs des éléments non-nuls de la matrice.
+ *        - nz : le nombre d'élément non-nul dans la matrice creuse.
+ *        - dim : la dimension de la matrice creuse (matrice carrée).
+ *
+ */
+typedef struct{
+  Array *pCols ;
+  Array *iLines ;
+  Array *xVals ;
+  unsigned int nz;
+  unsigned int dim;
+}Mtx;
 /*----------------------------------------------------------------------------*/
 /*----------------------------FONCTIONS & PROCEDURES--------------------------*/
 /*----------------------------------------------------------------------------*/
