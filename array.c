@@ -1,5 +1,5 @@
 /**
- * \file array.h
+ * \file array.c
  *
  *
  * \brief MATH0500 - Projet
