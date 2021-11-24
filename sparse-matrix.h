@@ -38,7 +38,7 @@
  *        - *pCols : les indices de début de chaque colonnes dans iLines.
  *        - *iLines : les indices de lignes de chaque élément dans xVals.
  *        - *xVals : les valeurs des éléments non-nuls de la matrice.
- *        - nz : le nombre d'élément non-nul dans la matrice creuse.
+ *        - nz : le nombre d'éléments non-nuls dans la matrice creuse.
  *        - dim : la dimension de la matrice creuse (matrice carrée).
  *
  */
