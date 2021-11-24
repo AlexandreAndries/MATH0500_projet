@@ -19,12 +19,40 @@
 #include <ctype.h>
 #include <getopt.h>
 
-#include "matrix-reader.h"
+#include "manager.h"
+#include "array.h"
+#include "sparse-matrix.h"
 /*----------------------------------------------------------------------------*/
 /*---------------------------------MAIN PROGRAM-------------------------------*/
 /*----------------------------------------------------------------------------*/
 int main(int argc, char *argv[]){
 
+  /*
+   *
+   * -o operation
+   * -l matrice creuse L
+   * -u matrice creuse U
+   * -a vecteur creux a
+   * -x vecteur dense x
+   * -h help
+   *
+   */
+  const char *optstring = ":ho:l:u:a:x:";
+
+  unsigned short tmp = 0;
+  unsigned short *operation = &tmp;
+  unsigned short *toOperation = NULL;
+
+  char *lFile = NULL;
+  char *uFile = NULL;
+  char *aFile = NULL;
+  char *xFile = NULL;
+
+  manage_inputs(argc, argv, optstring, &lFile, &uFile, &aFile, &xFile,
+                operation, &toOperation);
+
+
+  return 0;
 } //fin main()
 /*----------------------------------------------------------------------------*/
 /*----------------------------------FIN DU MAIN-------------------------------*/

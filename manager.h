@@ -1,5 +1,5 @@
 /**
- * \file array.h
+ * \file manager.h
  *
  *
  * \brief MATH0500 - Projet
@@ -9,6 +9,41 @@
  * \date 10/11/2021
  *
  * Ce fichier contient les déclarations de types et les prototypes des
- * fonctions utilisées pour représenter une matrice creuse en format
- * "Compressed Sparse Column".
+ * fonctions utilisées dans la gestion des arguments du programme, et au
+ * déroulement des opérations du programmes.
  */
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+#include <string.h>
+#include <unistd.h>
+#include <ctype.h>
+#include <getopt.h>
+
+#include "array.h"
+#include "sparse-matrix.h"
+
+/*----------------------------------------------------------------------------*/
+/*--------------------------------INCLUDE GUARD-------------------------------*/
+/*----------------------------------------------------------------------------*/
+#ifndef __MANAGER__
+#define __MANAGER__
+/*----------------------------------------------------------------------------*/
+/*-----------------------------------MACROS-----------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------STRUCTURES DE DONNEES---------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------FONCTIONS & PROCEDURES--------------------------*/
+/*----------------------------------------------------------------------------*/
+void manage_inputs(int argc, char *argv[], const char *optstring,
+                  char **lFile, char **uFile, char **aFile, char **xFile,
+                  unsigned short *operation, unsigned short **toOperation);
+/*----------------------------------------------------------------------------*/
+/*--------------------------------FIN DU HEADER-------------------------------*/
+/*----------------------------------------------------------------------------*/
+#endif // __MANAGER__
