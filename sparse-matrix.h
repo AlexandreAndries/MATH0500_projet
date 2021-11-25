@@ -35,8 +35,8 @@
  *        "column compressed".
  *        Mtx contient trois structures Array et deux informations:
  *
- *        - *pCols : les indices de début de chaque colonnes dans iLines.
- *        - *iLines : les indices de lignes de chaque élément dans xVals.
+ *        - *pCols : les indices de début de chaque colonnes dans iRows.
+ *        - *iRows : les indices de lignes de chaque élément dans xVals.
  *        - *xVals : les valeurs des éléments non-nuls de la matrice.
  *        - nz : le nombre d'éléments non-nuls dans la matrice creuse.
  *        - dim : la dimension de la matrice creuse (matrice carrée).
@@ -44,7 +44,7 @@
  */
 typedef struct{
   Array *pCols ;
-  Array *iLines ;
+  Array *iRows ;
   Array *xVals ;
   unsigned int nz;
   unsigned int dim;
@@ -52,7 +52,32 @@ typedef struct{
 /*----------------------------------------------------------------------------*/
 /*----------------------------FONCTIONS & PROCEDURES--------------------------*/
 /*----------------------------------------------------------------------------*/
-// Mtx *create_sparse_matrix(unsigned int dimensions);
+/**
+ * \fn Mtx *create_sparse_matrix(void)
+ * \brief Crée une structure Mtx représentant une matrice creuse.
+ *
+ * \return Un pointeur vers une nouvelle matrice creuse non-initialisée.
+ *         NULL en cas d'échec.
+ */
+Mtx *create_sparse_matrix(void);
+/*----------------------------------------------------------------------------*/
+/**
+ * \fn void init_sparse_matrix(Mtx *mtx)
+ * \brief Initialise la matrice creuse mtx.
+ *
+ * \param mtx, pointeur sur matrice creuse (!= NULL).
+ *
+ */
+void init_sparse_matrix(Mtx *mtx);
+/*----------------------------------------------------------------------------*/
+/**
+ * \fn void free_sparse_matrix(Mtx *mtx)
+ * \brief Libère la mémoire allouée à la structure mtx.
+ *
+ * \param mtx, pointeur sur matrice creuse (!= NULL).
+ *
+ */
+void free_sparse_matrix(Mtx *mtx);
 /*----------------------------------------------------------------------------*/
 /*--------------------------------FIN DU HEADER-------------------------------*/
 /*----------------------------------------------------------------------------*/

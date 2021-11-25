@@ -40,13 +40,55 @@
 /*----------------------------------------------------------------------------*/
 /*----------------------------FONCTIONS & PROCEDURES--------------------------*/
 /*----------------------------------------------------------------------------*/
-// a specifier
+/**
+ * \fn void manage_inputs(int argc, char *argv[], const char *optstring,
+ *                 char **lFile, char **uFile, char **aFile, char **xFile,
+ *                 unsigned short *operation, unsigned short **toOperation);
+ *
+ * \brief Fonction permettant la gestion des options et arguments passés au
+ *        programme principal. La fonction permet également la gestion des
+ *        erreurs d'input en renvoyant des messages informatifs sur la sortie
+ *        standard.
+ *
+ * \param argc, nombre d'arguments passés au programme.
+ * \param *argv[], tableau contenant les arguments passés au programme.
+ * \param *optstring, string contenant les options possibles du programme.
+ * \param **lFile, pointeur sur string qui contiendra le nom du fichier
+ *                 représentant la matrice creuse L en input.
+ * \param **uFile, pointeur sur string qui contiendra le nom du fichier
+ *                 représentant la matrice creuse U en input.
+ * \param **aFile, pointeur sur string qui contiendra le nom du fichier
+ *                 représentant le vecteur creux a en input.
+ * \param **xFile, pointeur sur string qui contiendra le nom du fichier
+ *                 représentant le vecteur dense x en input.
+ * \param *operation, pointeur sur unsigned short qui contiendra l'opération à
+ *                    effectuer selon le chox de l'utilisateur.
+ * \param **toOperation, pointeur sur pointeur qui pointera sur operation.
+ *
+ */
 void manage_inputs(int argc, char *argv[], const char *optstring,
                   char **lFile, char **uFile, char **aFile, char **xFile,
                   unsigned short *operation, unsigned short **toOperation);
 /*----------------------------------------------------------------------------*/
-// a specifier
-Mtx *read_mtx_file(char *file, Mtx **matrix);
+/**
+ * \fn Mtx *read_mtx_file(char *filename)
+ * \brief Lit un fichier .mtx représentant une matrice creuse et enregistre
+ *        les données du fichier dans une structure Mtx.
+ *
+ * \param filename, path vers le fichier contenant la matrice creuse. (!= NULL)
+ *
+ * \return Un pointeur vers la structure Mtx représentant la matrice creuse
+ *         contenue dans le fichier en argument.  NULL en cas d'échec.
+ */
+Mtx *read_mtx_file(char *filename);
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+
 /*----------------------------------------------------------------------------*/
 /*--------------------------------FIN DU HEADER-------------------------------*/
 /*----------------------------------------------------------------------------*/

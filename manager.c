@@ -28,6 +28,39 @@
 /*----------------------------------------------------------------------------*/
 /*------------------------------FONCTIONS STATIQUES---------------------------*/
 /*----------------------------------------------------------------------------*/
+/**
+ * \fn void skip_banner(FILE *file)
+ * \brief Ignore la première ligne ("banière") du fichier MatrixMarket en input.
+ *
+ * \param file, path vers le fichier contenant la matrice. (!= NULL)
+ *
+ */
+static void skip_banner(FILE *file){
+  assert(file != NULL);
+
+  char c ;
+  fscanf(file, "%c", &c);
+  if(c == '%'){
+    fscanf(file, "%*[^\n]\n");
+  }
+}// fin skip_banner()
+/*----------------------------------------------------------------------------*/
+/**
+ * \fn void get_dimensions(FILE *file, Mtx *mtx)
+ * \brief Enregistre les données concernant les dimensions de la matrice creuse
+ *        et le nombre d'éléments non-nuls qu'elle possède.
+ *        Ces données sont enregistrées dans une structure Mtx non-initialisée.
+ *
+ * \param file, path vers le fichier contenant la matrice. (!= NULL)
+ * \param mtx, structure Mtx existante mais non-initialisée. (!= NULL)
+ *
+ */
+static void get_dimensions(FILE *file, Mtx *mtx){
+  assert(mtx != NULL && file!= NULL);
+
+  fscanf(file, "%u %*u %u", &mtx->dim, &mtx->nz);
+}// fin get_dimensions()
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------FONCTIONS & PROCEDURES--------------------------*/
@@ -87,19 +120,28 @@ void manage_inputs(int argc, char *argv[], const char *optstring,
         break;
     }
   }
-}
+}// fin manage_inputs()
 /*----------------------------------------------------------------------------*/
 Mtx *read_mtx_file(char *filename){
   assert(filename != NULL);
 
   Mtx *mtx = NULL;
+  mtx = create_sparse_matrix();
 
-  FILE *file = fopen(filename, "r");
+  FILE *fp = fopen(filename, "r");
 
-  fclose(file);
+  skip_banner(fp);
+  get_dimensions(fp, mtx);
+  init_sparse_matrix(mtx);
+  //get_data -->lecture des données sur les NZ dans le fichier en entrée,
+  //            pour remplir les 3 vecteurs de la matrice et avoir le format CSC
+  //            de l matrice contenue dans le fichier.
+
+
+  fclose(fp);
   return mtx;
-}
-
+}// fin read_mtx_file()
+/*----------------------------------------------------------------------------*/
 
 
 

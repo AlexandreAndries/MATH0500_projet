@@ -48,10 +48,18 @@ int main(int argc, char *argv[]){
   char *aFile = NULL;
   char *xFile = NULL;
 
+  Mtx *L = NULL;
+  // Mtx *U = NULL;
+  //vector a
+  //vector x
+
   manage_inputs(argc, argv, optstring, &lFile, &uFile, &aFile, &xFile,
                 operation, &toOperation);
+  //operations ... switch case sur l'option -o, différencier les input !! to do
 
+  L = read_mtx_file(lFile); //test
 
+  free_sparse_matrix(L); //test
   return 0;
 } //fin main()
 /*----------------------------------------------------------------------------*/

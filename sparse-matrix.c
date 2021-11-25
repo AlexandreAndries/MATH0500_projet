@@ -18,6 +18,7 @@
 
 #include "boolean.h"
 #include "array.h"
+#include "sparse-matrix.h"
 /*----------------------------------------------------------------------------*/
 /*------------------------------FONCTIONS STATIQUES---------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -25,7 +26,41 @@
 /*----------------------------------------------------------------------------*/
 /*----------------------------FONCTIONS & PROCEDURES--------------------------*/
 /*----------------------------------------------------------------------------*/
+Mtx *create_sparse_matrix(void){
 
+  Mtx *mtx = (Mtx*)malloc(sizeof(Mtx));
+  if(mtx == NULL){
+    return NULL;
+  }
+
+  mtx->pCols = NULL;
+  mtx->iRows = NULL;
+  mtx->xVals = NULL;
+  mtx->nz = 0;
+  mtx->dim = 0;
+
+  return mtx;
+}// fin create_sparse_matrix()
+/*----------------------------------------------------------------------------*/
+void init_sparse_matrix(Mtx *mtx){
+  assert(mtx != NULL && mtx->dim != 0);
+
+  mtx->pCols = create_array(mtx->dim);
+  mtx->iRows = create_array(mtx->nz);
+  mtx->xVals = create_array(mtx->nz);
+}// fin init_sparse_matrix()
+/*----------------------------------------------------------------------------*/
+void free_sparse_matrix(Mtx *mtx){
+  assert(mtx != NULL);
+
+  free(mtx->pCols->vals);
+  free(mtx->pCols);
+  free(mtx->iRows->vals);
+  free(mtx->iRows);
+  free(mtx->xVals->vals);
+  free(mtx->xVals);
+  free(mtx);
+}// fin free_sparse_matrix()
 /*----------------------------------------------------------------------------*/
 /*--------------------------------FIN DU MODULE-------------------------------*/
 /*----------------------------------------------------------------------------*/
