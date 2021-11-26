@@ -17,8 +17,8 @@ LDFLAGS=
 
 # Files
 EXEC=mtxSolver
-MODULES=main.c manager.c boolean.c array.c sparse-matrix.c operations.c
-OBJECTS=main.o manager.o boolean.o array.o sparse-matrix.o operations.o
+MODULES=source/main.c source/manager.c source/boolean.c source/array.c source/sparse-matrix.c source/operations.c
+OBJECTS=source/main.o source/manager.o source/boolean.o source/array.o source/sparse-matrix.o source/operations.o
 
 ## Rules
 
@@ -27,21 +27,21 @@ all: $(EXEC)
 mtxSolver: $(OBJECTS)
 	$(LD) -o $(EXEC) $(OBJECTS) $(LDFLAGS)
 
-manager.o: manager.c
-	$(CC) -c manager.c -o manager.o $(CFLAGS)
+source/manager.o: source/manager.c
+	$(CC) -c source/manager.c -o source/manager.o $(CFLAGS)
 
-boolean.o: boolean.c
-	$(CC) -c boolean.c -o boolean.o $(CFLAGS)
+source/boolean.o: source/boolean.c
+	$(CC) -c source/boolean.c -o source/boolean.o $(CFLAGS)
 
-array.o: array.c
-	$(CC) -c array.c -o array.o $(CFLAGS)
+source/array.o: source/array.c
+	$(CC) -c source/array.c -o source/array.o $(CFLAGS)
 
-sparse-matrix.o: sparse-matrix.c
-	$(CC) -c sparse-matrix.c -o sparse-matrix.o $(CFLAGS)
+source/sparse-matrix.o: source/sparse-matrix.c
+	$(CC) -c source/sparse-matrix.c -o source/sparse-matrix.o $(CFLAGS)
 
-operations.o: operations.c
-	$(CC) -c operations.c -o operations.o $(CFLAGS)
+source/operations.o: source/operations.c
+	$(CC) -c source/operations.c -o source/operations.o $(CFLAGS)
 
 clean:
-	rm -f *.o *.gch $(EXEC) *~
+	rm -f source/*.o source/*.gch $(EXEC) *~
 	clear
