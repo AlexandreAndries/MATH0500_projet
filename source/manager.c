@@ -61,7 +61,44 @@ static void get_dimensions(FILE *file, Mtx *mtx){
   fscanf(file, "%u %*u %u", &mtx->dim, &mtx->nz);
 }// fin get_dimensions()
 /*----------------------------------------------------------------------------*/
+// WORK IN PROGRESS
+// à spécifier
+static void get_data(FILE *file, Mtx *mtx){
+  assert(file != NULL && mtx != NULL);
 
+  /*-------------Var Init--------------*/
+  unsigned int idx = 0;       /*-index des vecteurs iRows et xVals--*/
+  unsigned int pIdx = 0;      /*-index du vecteur pCols ------------*/
+
+  unsigned int row = 0;       /*-var de lecture des lignes----------*/
+  unsigned int col = 0;       /*-var de lecture des colonnes--------*/
+  double val = 0;             /*-var de lecture des valeurs---------*/
+
+  unsigned int tmp = row;     /*-comparateur de lignes--------------*/
+  unsigned int ptr = 0;       /*-pointeur/indice stocké dans pCols--*/
+
+  /*-------------Read Loop--------------*/
+  /*- WATCH OUT, data in the file is initially saved in CSR (R for Row) -*/
+  /*- format, which can be confusing. Because the stucture Mtx is -------*/
+  /*- designed for CSC, it is necessary to save the lines of the matrix -*/
+  /*- in the file as columns. This error is later corrected by ----------*/
+  /*- transposing the saved data to have a correct CSC structure. -------*/
+  /*- DO NOT MISINTERPRET the code below as an error! See it as a -------*/
+  /*- temporary measure to read the file efficiently. -------------------*/
+  while(fscanf(file, "%u %u %lf", &row, &col, &val) != EOF){
+    mtx->xVals = add_at(mtx->xVals, idx, val);
+    mtx->iRows = add_at(mtx->iRows, idx, col-SHIFT);
+
+    if(tmp != row){
+      //action here !!!
+      pIdx++;
+    }
+
+    // mtx->pCols = add_at(mtx->pCols, pIdx, ptr);
+
+    ptr++;
+  }
+}// fin get_data()
 /*----------------------------------------------------------------------------*/
 /*----------------------------FONCTIONS & PROCEDURES--------------------------*/
 /*----------------------------------------------------------------------------*/

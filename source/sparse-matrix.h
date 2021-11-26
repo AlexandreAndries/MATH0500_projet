@@ -25,7 +25,7 @@
 /*----------------------------------------------------------------------------*/
 /*-----------------------------------MACROS-----------------------------------*/
 /*----------------------------------------------------------------------------*/
-
+#define INITIAL_SIZE 1
 /*----------------------------------------------------------------------------*/
 /*----------------------------STRUCTURES DE DONNEES---------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -78,6 +78,37 @@ void init_sparse_matrix(Mtx *mtx);
  *
  */
 void free_sparse_matrix(Mtx *mtx);
+/*----------------------------------------------------------------------------*/
+/**
+ * \fn unsigned int get_matrix_dimensions(Mtx *mtx)
+ * \brief Renvoie la dimension de la matrice creuse.
+ *
+ * \param mtx, pointeur sur matrice creuse (!= NULL).
+ *
+ * \return Les dimensions (nombre de lignes/colonnes) de la matrice creuse.
+ *         (NB: la matrice creuse est carrée).
+ */
+unsigned int get_matrix_dimensions(Mtx *mtx);
+/*----------------------------------------------------------------------------*/
+/**
+ * \fn unsigned int get_matrix_pCols_size(Mtx *mtx)
+ * \brief Renvoie la taille du vecteur pCols de la matrice creuse.
+ *
+ * \param mtx, pointeur sur matrice creuse (!= NULL).
+ *
+ * \return La taille du vecteur pCols contenu dans la matrice creuse.
+ */
+unsigned int get_matrix_pCols_size(Mtx *mtx);
+/*----------------------------------------------------------------------------*/
+/**
+ * \fn unsigned int get_matrix_nz_size(Mtx *mtx)
+ * \brief Renvoie la quantitée d'éléments non-nuls contenu dans la matrice.
+ *
+ * \param mtx, pointeur sur matrice creuse (!= NULL).
+ *
+ * \return La quantitée d'éléments non-nuls de la matrice creuse.
+ */
+unsigned int get_matrix_nz_size(Mtx *mtx);
 /*----------------------------------------------------------------------------*/
 /*--------------------------------FIN DU HEADER-------------------------------*/
 /*----------------------------------------------------------------------------*/

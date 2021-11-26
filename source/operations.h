@@ -33,7 +33,16 @@
 /*----------------------------------------------------------------------------*/
 /*----------------------------FONCTIONS & PROCEDURES--------------------------*/
 /*----------------------------------------------------------------------------*/
-
+/**
+ * \fn Mtx *transpose(Mtx *mtx)
+ * \brief Calcule et retourne la transposée de la matrice CSC en input.
+ *
+ * \param mtx, pointeur sur matrice creuse (!= NULL).
+ *
+ * \return Un pointeur vers une structure Mtx représentant la matrice creuse
+ *         transposée.
+ */
+Mtx *transpose(Mtx *mtx);
 /*----------------------------------------------------------------------------*/
 /*--------------------------------FIN DU HEADER-------------------------------*/
 /*----------------------------------------------------------------------------*/

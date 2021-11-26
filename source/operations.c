@@ -29,7 +29,32 @@
 /*----------------------------------------------------------------------------*/
 /*----------------------------FONCTIONS & PROCEDURES--------------------------*/
 /*----------------------------------------------------------------------------*/
-// FONCTION POUR TRANSPOSER MATRICE A FAIRE EN PRIORITE ULTIME !!!
+// WORK IN PROGRESS !!!! DO NOT MODIFY UNLESS THIS BANNER HAS BEEN REMOVED
+Mtx *transpose(Mtx *mtx){
+  assert(mtx != NULL);
+
+  /*-------------Var Init--------------*/
+  unsigned int nCols = get_matrix_pCols_size(mtx);
+  unsigned int nLines = get_matrix_dimensions(mtx);
+  unsigned int nz = get_matrix_nz_size(mtx);
+  unsigned int index = 0, tmp = 0, end = 0;
+
+  /*-----------Tables Init-------------*/
+  unsigned int *occ = (unsigned int *)calloc(nLines, sizeof(unsigned int));
+  if(occ == NULL){
+    return NULL;
+  }
+
+  Mtx *matrix_t = create_sparse_matrix();
+  matrix_t->dim = nLines;
+  matrix_t->nz = nz;
+  init_sparse_matrix(matrix_t);
+
+  // init new transposed matrix with appropriate sizes (work in progress)
+
+
+  return mtx;
+}
 /*----------------------------------------------------------------------------*/
 /*--------------------------------FIN DU MODULE-------------------------------*/
 /*----------------------------------------------------------------------------*/

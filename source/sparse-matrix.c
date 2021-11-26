@@ -45,7 +45,7 @@ Mtx *create_sparse_matrix(void){
 void init_sparse_matrix(Mtx *mtx){
   assert(mtx != NULL && mtx->dim != 0);
 
-  mtx->pCols = create_array(mtx->dim);
+  mtx->pCols = create_array(INITIAL_SIZE);
   mtx->iRows = create_array(mtx->nz);
   mtx->xVals = create_array(mtx->nz);
 }// fin init_sparse_matrix()
@@ -61,6 +61,24 @@ void free_sparse_matrix(Mtx *mtx){
   free(mtx->xVals);
   free(mtx);
 }// fin free_sparse_matrix()
+/*----------------------------------------------------------------------------*/
+unsigned int get_matrix_dimensions(Mtx *mtx){
+ assert(mtx != NULL);
+
+ return mtx->dim;
+}// fin get_matrix_dimensions()
+/*----------------------------------------------------------------------------*/
+unsigned int get_matrix_pCols_size(Mtx *mtx){
+  assert(mtx != NULL);
+
+  return get_array_size(mtx->pCols);
+}// fin get_matrix_pCols_size()
+
+unsigned int get_matrix_nz_size(Mtx *mtx){
+  assert(mtx != NULL);
+
+  return mtx->nz;
+}// fin get_matrix_nz_size()
 /*----------------------------------------------------------------------------*/
 /*--------------------------------FIN DU MODULE-------------------------------*/
 /*----------------------------------------------------------------------------*/
