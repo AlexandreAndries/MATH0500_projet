@@ -45,7 +45,7 @@ Mtx *create_sparse_matrix(void){
 void init_sparse_matrix(Mtx *mtx){
   assert(mtx != NULL && mtx->dim != 0);
 
-  mtx->pCols = create_array(INITIAL_SIZE);
+  mtx->pCols = create_array(mtx->dim);
   mtx->iRows = create_array(mtx->nz);
   mtx->xVals = create_array(mtx->nz);
 }// fin init_sparse_matrix()

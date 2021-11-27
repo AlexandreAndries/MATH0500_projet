@@ -127,7 +127,10 @@ Array *add_at(Array *array, unsigned int i, double val){
     array =  realloc_array(array);
   }
 
-  array = shift_right(array, i);
+  if(array->vals[i] != 0){ //may have a probleme here
+    array = shift_right(array, i);
+  }
+
   array->vals[i] = val;
   array->size++;
 

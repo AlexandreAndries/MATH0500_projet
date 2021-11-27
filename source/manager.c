@@ -70,12 +70,12 @@ static void get_data(FILE *file, Mtx *mtx){
   unsigned int idx = 0;       /*-index des vecteurs iRows et xVals--*/
   unsigned int pIdx = 0;      /*-index du vecteur pCols ------------*/
 
-  unsigned int row = 0;       /*-var de lecture des lignes----------*/
-  unsigned int col = 0;       /*-var de lecture des colonnes--------*/
+  unsigned int row = INITIAL_POS;       /*-var de lecture des lignes----------*/
+  unsigned int col = INITIAL_POS;       /*-var de lecture des colonnes--------*/
   double val = 0;             /*-var de lecture des valeurs---------*/
 
-  unsigned int tmp = row;     /*-comparateur de lignes--------------*/
-  unsigned int ptr = 0;       /*-pointeur/indice stocké dans pCols--*/
+  unsigned int tmp = INITIAL_POS;     /*-comparateur de lignes--------------*/
+  unsigned int ptr = INITIAL_POS;       /*-pointeur/indice stocké dans pCols--*/
 
   /*-------------Read Loop--------------*/
   /*- WATCH OUT, data in the file is initially saved in CSR (R for Row) -*/
@@ -86,16 +86,21 @@ static void get_data(FILE *file, Mtx *mtx){
   /*- DO NOT MISINTERPRET the code below as an error! See it as a -------*/
   /*- temporary measure to read the file efficiently. -------------------*/
   while(fscanf(file, "%u %u %lf", &row, &col, &val) != EOF){
-    mtx->xVals = add_at(mtx->xVals, idx, val);
-    mtx->iRows = add_at(mtx->iRows, idx, col-SHIFT);
-
-    if(tmp != row){
-      //action here !!!
+    mtx->xVals = add_at(mtx->xVals, idx, (double)val);
+    mtx->iRows = add_at(mtx->iRows, idx, (double)col);
+    //PROBLEM HERE :()
+    if(tmp == 1){
+      printf("ok\n");
+      mtx->pCols = add_at(mtx->pCols, pIdx, ptr);
+      pIdx++;
+      tmp++;
+    }else if(tmp != row && tmp != 1 && row != 1){
+      tmp = row;
+      mtx->pCols = add_at(mtx->pCols, pIdx, ptr);
       pIdx++;
     }
 
-    // mtx->pCols = add_at(mtx->pCols, pIdx, ptr);
-
+    idx++;
     ptr++;
   }
 }// fin get_data()
@@ -170,10 +175,15 @@ Mtx *read_mtx_file(char *filename){
   skip_banner(fp);
   get_dimensions(fp, mtx);
   init_sparse_matrix(mtx);
+
+  get_data(fp, mtx);
   //get_data -->lecture des données sur les NZ dans le fichier en entrée,
   //            pour remplir les 3 vecteurs de la matrice et avoir le format CSC
   //            de l matrice contenue dans le fichier.
 
+  for(unsigned int k = 0; k < mtx->pCols->size; k++){
+    printf("%lf %lf %lf\n", mtx->pCols->vals[k], mtx->iRows->vals[k], mtx->xVals->vals[k]);
+  }
 
   fclose(fp);
   return mtx;
