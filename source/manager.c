@@ -24,6 +24,7 @@
 #include "array.h"
 #include "sparse-matrix.h"
 #include "manager.h"
+#include "operations.h"
 
 /*----------------------------------------------------------------------------*/
 /*------------------------------FONCTIONS STATIQUES---------------------------*/
@@ -63,20 +64,21 @@ static void get_dimensions(FILE *file, Mtx *mtx){
 /*----------------------------------------------------------------------------*/
 // WORK IN PROGRESS
 // à spécifier
-static void get_data(FILE *file, Mtx *mtx){
+static void get_data_mtx(FILE *file, Mtx *mtx){
   assert(file != NULL && mtx != NULL);
 
   /*-------------Var Init--------------*/
-  unsigned int idx = 0;       /*-index des vecteurs iRows et xVals--*/
-  unsigned int pIdx = 0;      /*-index du vecteur pCols ------------*/
+  unsigned int idx = 0;                 /*-index des vecteurs iRows et xVals--*/
+  unsigned int pIdx = 0;                /*-index du vecteur pCols ------------*/
 
   unsigned int row = INITIAL_POS;       /*-var de lecture des lignes----------*/
   unsigned int col = INITIAL_POS;       /*-var de lecture des colonnes--------*/
-  double val = 0;             /*-var de lecture des valeurs---------*/
+  double val = 0;                       /*-var de lecture des valeurs---------*/
 
-  unsigned int tmp = INITIAL_POS;     /*-comparateur de lignes--------------*/
-  unsigned int ptr = INITIAL_POS;       /*-pointeur/indice stocké dans pCols--*/
+  unsigned int comp = INITIAL_POS;      /*-comparateur de lignes--------------*/
+  unsigned int pCol = INITIAL_POS;      /*-pointeur/indice stocké dans pCols--*/
 
+  unsigned int zCase = 0;               /*-différencie le 1er nz du reste-----*/
   /*-------------Read Loop--------------*/
   /*- WATCH OUT, data in the file is initially saved in CSR (R for Row) -*/
   /*- format, which can be confusing. Because the stucture Mtx is -------*/
@@ -88,20 +90,20 @@ static void get_data(FILE *file, Mtx *mtx){
   while(fscanf(file, "%u %u %lf", &row, &col, &val) != EOF){
     mtx->xVals = add_at(mtx->xVals, idx, (double)val);
     mtx->iRows = add_at(mtx->iRows, idx, (double)col);
-    //PROBLEM HERE :()
-    if(tmp == 1){
-      printf("ok\n");
-      mtx->pCols = add_at(mtx->pCols, pIdx, ptr);
+
+    if(!zCase){               /*-First case, first nz in the file--------*/
+      mtx->pCols = add_at(mtx->pCols, pIdx, pCol);
       pIdx++;
-      tmp++;
-    }else if(tmp != row && tmp != 1 && row != 1){
-      tmp = row;
-      mtx->pCols = add_at(mtx->pCols, pIdx, ptr);
+      comp = row;
+      zCase++;
+    }else if(comp != row){    /*-Every other nz in the file--------------*/
+      mtx->pCols = add_at(mtx->pCols, pIdx, pCol);
       pIdx++;
+      comp = row;
     }
 
     idx++;
-    ptr++;
+    pCol++;
   }
 }// fin get_data()
 /*----------------------------------------------------------------------------*/
@@ -168,25 +170,41 @@ Mtx *read_mtx_file(char *filename){
   assert(filename != NULL);
 
   Mtx *mtx = NULL;
+  Mtx *mtx_t = NULL;
+
   mtx = create_sparse_matrix();
+  mtx_t = create_sparse_matrix();
 
+  /*--------Lecture des données du fichier---------*/
   FILE *fp = fopen(filename, "r");
-
   skip_banner(fp);
   get_dimensions(fp, mtx);
   init_sparse_matrix(mtx);
+  get_data_mtx(fp, mtx);
+  fclose(fp);
 
-  get_data(fp, mtx);
-  //get_data -->lecture des données sur les NZ dans le fichier en entrée,
-  //            pour remplir les 3 vecteurs de la matrice et avoir le format CSC
-  //            de l matrice contenue dans le fichier.
+  /*----------Init mtx_t sur base de mtx-----------*/
+  mtx_t->dim = get_matrix_dimensions(mtx);
+  mtx_t->nz = get_matrix_nz_size(mtx);
+  init_sparse_matrix(mtx_t);
 
+
+  convert(mtx, mtx_t);
+
+  printf("CSR format:\n");
   for(unsigned int k = 0; k < mtx->pCols->size; k++){
     printf("%lf %lf %lf\n", mtx->pCols->vals[k], mtx->iRows->vals[k], mtx->xVals->vals[k]);
   }
+  printf("\n\n");
+  printf("CSC format:\n");
+  for(unsigned int k = 0; k < mtx_t->pCols->size; k++){
+    printf("%lf %lf %lf\n", mtx_t->pCols->vals[k], mtx_t->iRows->vals[k], mtx_t->xVals->vals[k]);
+  }
 
-  fclose(fp);
-  return mtx;
+
+  free_sparse_matrix(mtx);
+
+  return mtx_t;
 }// fin read_mtx_file()
 /*----------------------------------------------------------------------------*/
 

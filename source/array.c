@@ -93,7 +93,7 @@ Array *create_array(unsigned int size){
   }
 
   array->cap = size ;
-  array->size = size ;
+  array->size = 0 ;
 
   array->vals = (double *)malloc(size*sizeof(double));
   if(array->vals == NULL){
@@ -127,7 +127,7 @@ Array *add_at(Array *array, unsigned int i, double val){
     array =  realloc_array(array);
   }
 
-  if(array->vals[i] != 0){ //may have a probleme here
+  if(array->vals[i] != 0){ 
     array = shift_right(array, i);
   }
 
