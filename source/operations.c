@@ -35,10 +35,11 @@ void convert(Mtx *mtx, Mtx *matrix_t){
   /*-------------Var Init--------------*/
   unsigned int nRows = get_matrix_dimensions(mtx);
   unsigned int nz = get_matrix_nz_size(mtx);
-  unsigned int tmp = 0, cumSum = 1;
+  unsigned int tmp = 0, cumSum = 1, curr, inc=0, prev, row=1;
 
-  unsigned int *rowCount = (unsigned int*)calloc(nRows, sizeof(unsigned int));
-  if(rowCount == NULL){
+  unsigned int *colCount = (unsigned int*)calloc(nRows, sizeof(unsigned int));
+  // unsigned int *rowCount = (unsigned int*)calloc(nz, sizeof(unsigned int));
+  if(colCount == NULL /*|| rowCount == NULL*/){
     printf("Erreur d'allocation mémoire\n");
     exit(-2);
   }
@@ -46,19 +47,66 @@ void convert(Mtx *mtx, Mtx *matrix_t){
 
   for(unsigned int i=0; i<nz; i++){
     tmp = mtx->iRows->vals[i]-1;
-    rowCount[tmp]++;
+    colCount[tmp]++;
   }
 
   add_at(matrix_t->pCols, 0, 1);
   for(unsigned int j=1; j<nRows; j++){
-    cumSum += rowCount[j-1];
+    cumSum += colCount[j-1];
     add_at(matrix_t->pCols, j, cumSum);
   }
+  //--------Code above works --------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //--------Work in progress below ------------------------
+  // prev = mtx->pCols->vals[0];
+  // // rowCount[0] = prev;
+  // for(unsigned int k=0; k<nRows; k++){
+  //   curr = mtx->pCols->vals[k];
+  //
+  //   inc = curr-prev;
+  //
+  //   while(curr > (curr - inc)){
+  //     rowCount[curr-inc] = row;
+  //     inc--;
+  //     printf("%u\n", prev);
+  //   }
+  //
+  //   prev = curr;
+  //   row++;
+  // }
+  //
+  // printf("\n\n");
+  // printf("rowCount:\n");
+  // for(unsigned int k = 0; k < nz; k++){
+  //   printf("%u\n", rowCount[k]);
+  // }
+
 
 
   // for(unsigned int j=0; j<nz; j++){
+  //   col = mtx->iRows->vals[j]-1;
+  //   row = -1;
+  //   val = mtx->xVals->vals[j];
+  //
+  //   idx = matrix_t->pCols->vals[dest];
+  //
+  //   add_at(matrix_t->iRows, idx, /**/);
   //
   // }
+
+  free(colCount);
 }// fin convert()
 
 
