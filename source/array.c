@@ -9,7 +9,7 @@
  * \date 10/11/2021
  *
  * Ce fichier contient les définitions des fonctions utilisées
- * pour représenter un vecteur (array). Les arrays sont utilisés
+ * pour représenter un array. Les arrays sont utilisés
  * pour représenter les matrices creuses en format "Compressed Sparse Column".
  */
 #include <stdlib.h>
@@ -23,11 +23,11 @@
 /*----------------------------------------------------------------------------*/
 /**
  * \fn Array *realloc_array(Array *array)
- * \brief Augmente (i.e. double) la capacité du vecteur (reallocation dynamique)
+ * \brief Augmente (i.e. double) la capacité du array (reallocation dynamique)
  *
- * \param array, le vecteur à augmenter (!= NULL).
+ * \param array, le array à augmenter (!= NULL).
  *
- * \return Un pointeur vers le nouveau vecteur, Null en cas d'échec.
+ * \return Un pointeur vers le nouveau array, Null en cas d'échec.
  */
 static Array *realloc_array(Array *array){
   assert(array != NULL);
@@ -40,13 +40,13 @@ static Array *realloc_array(Array *array){
 /*----------------------------------------------------------------------------*/
 /**
  * \fn Array *shift_right(Array *array, unsigned int start)
- * \brief Décale d'une position vers la droite les éléments du vecteur à partir
- * de 'start' vers la fin vecteur. Si besoin, on augmente la taille du vecteur.
+ * \brief Décale d'une position vers la droite les éléments du array à partir
+ * de 'start' vers la fin array. Si besoin, on augmente la taille du array.
  *
- * \param array, le vecteur à manipuler (!= NULL)
+ * \param array, le array à manipuler (!= NULL)
  * \param start, la position de départ du décalage
  *
- * \return Un pointeur vers le nouveau vecteur, Null en cas d'échec.
+ * \return Un pointeur vers le nouveau array, Null en cas d'échec.
  */
 static Array *shift_right(Array *array, unsigned int start){
   assert(array != NULL && start <= array->size);
@@ -64,13 +64,13 @@ static Array *shift_right(Array *array, unsigned int start){
 /*----------------------------------------------------------------------------*/
 /**
  * \fn Array *shift_left(Array *array, unsigned int start)
- * \brief Décale d'une position vers la gauche les éléments du vecteur à partir
- * de 'start' vers la fin vecteur.
+ * \brief Décale d'une position vers la gauche les éléments du array à partir
+ * de 'start' vers la fin array.
  *
- * \param array, le vecteur à manipuler (!= NULL)
+ * \param array, le array à manipuler (!= NULL)
  * \param start, la position de départ du décalage
  *
- * \return Un pointeur vers le nouveau vecteur, Null en cas d'échec.
+ * \return Un pointeur vers le nouveau array, Null en cas d'échec.
  */
 static Array *shift_left(Array *array, unsigned int start){
   assert(array != NULL && 0 < start && start <= array->size);
@@ -127,7 +127,7 @@ Array *add_at(Array *array, unsigned int i, double val){
     array =  realloc_array(array);
   }
 
-  if(array->vals[i] != 0){ 
+  if(array->vals[i] != 0){
     array = shift_right(array, i);
   }
 

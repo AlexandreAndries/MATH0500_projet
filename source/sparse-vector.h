@@ -1,5 +1,5 @@
 /**
- * \file operations.h
+ * \file sparse-vector.h
  *
  *
  * \brief MATH0500 - Projet
@@ -9,46 +9,33 @@
  * \date 10/11/2021
  *
  * Ce fichier contient les déclarations de types et les prototypes des
- * fonctions utilisées dans la gestion des calculs et opérations sur une
- * matrice creuse, entre deux matrices creuses, entre une matrice creuse et
- * un vecteur creux (resp. un vecteur dense).
+ * fonctions pour représenter un vecteur creux ou dense. Les vecteurs sont
+ * utilisés lors des résolutions de systèmes triangulaires.
+ *
  */
-
-#include <stdlib.h>
 #include <stdio.h>
-#include <assert.h>
+#include <stdlib.h>
 
+#include "boolean.h"
 #include "array.h"
-#include "sparse-matrix.h"
-
 /*----------------------------------------------------------------------------*/
 /*--------------------------------INCLUDE GUARD-------------------------------*/
 /*----------------------------------------------------------------------------*/
-#ifndef __OPERATIONS__
-#define __OPERATIONS__
+#ifndef __SPARSEVCTR__
+#define __SPARSEVCTR__
 /*----------------------------------------------------------------------------*/
 /*-----------------------------------MACROS-----------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------STRUCTURES DE DONNEES---------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------FONCTIONS & PROCEDURES--------------------------*/
-/*----------------------------------------------------------------------------*/
-/** !!! MODIFY !!!
- * \fn Mtx *transpose(Mtx *mtx)
- * \brief Calcule et retourne la transposée de la matrice CSC en input.
- *
- * \param mtx, pointeur sur matrice creuse (!= NULL).
- *
- * \return Un pointeur vers une structure Mtx représentant la matrice creuse
- *         transposée.
- */
-void convert(Mtx *mtx, Mtx *matrix_t);
-/*----------------------------------------------------------------------------*/
-void sort_mtx_iRows(Mtx *mtx, unsigned int start, unsigned int end,
-                        unsigned int length);
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /*--------------------------------FIN DU HEADER-------------------------------*/
 /*----------------------------------------------------------------------------*/
-#endif // __OPERATIONS__
+#endif // __SPARSEVCTR__

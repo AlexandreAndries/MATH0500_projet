@@ -9,7 +9,7 @@
  * \date 10/11/2021
  *
  * Ce fichier contient les déclarations de types et les prototypes des
- * fonctions pour représenter un vecteur (array). Les arrays sont utilisés
+ * fonctions pour représenter un array. Les arrays sont utilisés
  * pour représenter les matrices creuses en format "Compressed Sparse Column".
  */
 #include <stdio.h>
@@ -30,14 +30,14 @@
 /*----------------------------------------------------------------------------*/
 /**
  * \struct Array
- * \brief Structure de données représentant un vecteur contenant les données
+ * \brief Structure de données représentant un array contenant les données
  *        d'une matrice creuse sous forme "column compressed".
  *        Array contient trois informations :
  *
- *        - cap : la capacité du vecteur (nombre max d'éléments qu'il peut
+ *        - cap : la capacité du array (nombre max d'éléments qu'il peut
  *                contenir dans la mémoire). Peut être augmenter par realloc.
- *        - size : le nombre d'éléments contenu dans le vecteur.
- *        - *vals : le tableau représentant le vecteur en tant que tel.
+ *        - size : le nombre d'éléments contenu dans le array.
+ *        - *vals : le tableau représentant le array en tant que tel.
  *
  */
 typedef struct{
@@ -50,54 +50,54 @@ typedef struct{
 /*----------------------------------------------------------------------------*/
 /**
  * \fn Array *create_array(unsigned int size)
- * \brief Crée une structure Array représentant un vecteur de taille "size"
+ * \brief Crée une structure Array représentant un array de taille "size"
  *
- * \param size, taille du vecteur (> 0)
+ * \param size, taille du array (> 0)
  *
- * \return Un pointeur vers un nouveau vecteur.  NULL en cas d'échec.
+ * \return Un pointeur vers un nouveau array.  NULL en cas d'échec.
  */
 Array *create_array(unsigned int size);
 /*----------------------------------------------------------------------------*/
 /**
  * \fn unsigned int get_array_size(Array *array)
- * \brief Retourne le nombre d'éléments que contient le vecteur.
+ * \brief Retourne le nombre d'éléments que contient le array.
  *
- * \param array, pointeur sur vecteur (!= NULL).
+ * \param array, pointeur sur array (!= NULL).
  *
- * \return le nombre d'éléments contenu dans le vecteur.
+ * \return le nombre d'éléments contenu dans le array.
  */
 unsigned int get_array_size(Array *array);
 /*----------------------------------------------------------------------------*/
 /**
  * \fn Boolean is_empty(Array *array)
- * \brief Détermine si le vecteur est vide ou non.
+ * \brief Détermine si le array est vide ou non.
  *
- * \param array, pointeur sur vecteur (!= NULL).
+ * \param array, pointeur sur array (!= NULL).
  *
- * \return True si le vecteur est vide, False sinon.
+ * \return True si le array est vide, False sinon.
  */
 Boolean is_empty(Array *array);
 /*----------------------------------------------------------------------------*/
 /**
  * \fn Array *add_at(Array *array, unsigned int i, double val)
- * \brief Ajoute un nouvel élément au vecteur.
+ * \brief Ajoute un nouvel élément au array.
  *
- * \param array, pointeur sur vecteur (!= NULL).
+ * \param array, pointeur sur array (!= NULL).
  * \param i, le rang auquel ajouter le nouvel élément. (0 <= i <= array->size)
  * \param val, l'élément à ajouter.
  *
- * \return Le vecteur modifié, le nouvel élément ajouté au rang i.
+ * \return Le array modifié, le nouvel élément ajouté au rang i.
  */
 Array *add_at(Array *array, unsigned int i, double val);
 /*----------------------------------------------------------------------------*/
 /**
  * \fn Array *remove_at(Array *array, unsigned int i)
- * \brief Supprime un élément du vecteur.
+ * \brief Supprime un élément du array.
  *
- * \param array, pointeur sur vecteur (!= NULL).
+ * \param array, pointeur sur array (!= NULL).
  * \param i, le rang de l'élément à supprimer.
  *
- * \return La vecteur modifié, l'élément au rang i a été supprimé.
+ * \return La array modifié, l'élément au rang i a été supprimé.
  */
 Array *remove_at(Array *array, unsigned int i);
 /*----------------------------------------------------------------------------*/

@@ -17,8 +17,8 @@ LDFLAGS=
 
 # Files
 EXEC=mtxSolver
-MODULES=source/main.c source/manager.c source/boolean.c source/array.c source/sparse-matrix.c source/operations.c
-OBJECTS=source/main.o source/manager.o source/boolean.o source/array.o source/sparse-matrix.o source/operations.o
+MODULES=source/main.c source/manager.c source/boolean.c source/array.c source/sparse-matrix.c source/operations.c source/sparse-vector.c
+OBJECTS=source/main.o source/manager.o source/boolean.o source/array.o source/sparse-matrix.o source/operations.o source/sparse-vector.o
 
 ## Rules
 
@@ -41,6 +41,9 @@ source/sparse-matrix.o: source/sparse-matrix.c
 
 source/operations.o: source/operations.c
 	$(CC) -c source/operations.c -o source/operations.o $(CFLAGS)
+
+source/sparse-vector.o: source/sparse-vector.c
+	$(CC) -c source/sparse-vector.c -o source/sparse-vector.o $(CFLAGS)
 
 clean:
 	rm -f source/*.o source/*.gch $(EXEC) *~

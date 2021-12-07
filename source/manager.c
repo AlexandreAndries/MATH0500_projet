@@ -25,6 +25,7 @@
 #include "sparse-matrix.h"
 #include "manager.h"
 #include "operations.h"
+#include "sparse-vector.h"
 
 /*----------------------------------------------------------------------------*/
 /*------------------------------FONCTIONS STATIQUES---------------------------*/
