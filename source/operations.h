@@ -44,8 +44,8 @@
  */
 void convert(Mtx *mtx, Mtx *matrix_t);
 /*----------------------------------------------------------------------------*/
-void sort_mtx_iRows(Mtx *mtx, unsigned int start, unsigned int end,
-                        unsigned int length);
+// void sort_mtx_iRows(Mtx *mtx, unsigned int start, unsigned int end,
+//                         unsigned int length);
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/

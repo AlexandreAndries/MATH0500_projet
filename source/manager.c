@@ -48,6 +48,19 @@ static void skip_banner(FILE *file){
 }// fin skip_banner()
 /*----------------------------------------------------------------------------*/
 /**
+ * \fn void write_banner(FILE *file)
+ * \brief Ecrit la première ligne ("banière") du fichier MatrixMarket en input.
+ *
+ * \param file, path vers le fichier où écrire la matrice. (!= NULL)
+ *
+ */
+static void write_banner(FILE *file){
+  assert(file != NULL);
+
+  fprintf(file, "%%%%MatrixMarket matrix coordinate real general\n");
+}// fin write_banner()
+/*----------------------------------------------------------------------------*/
+/**
  * \fn void get_dimensions(FILE *file, Mtx *mtx)
  * \brief Enregistre les données concernant les dimensions de la matrice creuse
  *        et le nombre d'éléments non-nuls qu'elle possède.
@@ -61,6 +74,22 @@ static void get_dimensions(FILE *file, Mtx *mtx){
   assert(mtx != NULL && file!= NULL);
 
   fscanf(file, "%u %*u %u", &mtx->dim, &mtx->nz);
+}// fin get_dimensions()
+/*----------------------------------------------------------------------------*/
+/**
+ * \fn void write_dimensions(FILE *file, Mtx *mtx)
+ * \brief Ecrit les données concernant les dimensions de la matrice creuse
+ *        et le nombre d'éléments non-nuls qu'elle possède.
+ *        Ces données sont écrite dans le fichier en entrée.
+ *
+ * \param file, path vers le fichier où écrire la matrice. (!= NULL)
+ * \param mtx, structure Mtx existante. (!= NULL)
+ *
+ */
+static void write_dimensions(FILE *file, Mtx *mtx){
+  assert(mtx != NULL && file!= NULL);
+
+  fprintf(file, "%u %u %u\n", mtx->dim, mtx->dim, mtx->nz);
 }// fin get_dimensions()
 /*----------------------------------------------------------------------------*/
 /**
@@ -88,6 +117,7 @@ static void get_data_mtx(FILE *file, Mtx *mtx){
   unsigned int pCol = INITIAL_POS;      /*-pointeur/indice stocké dans pCols--*/
 
   unsigned int zCase = 0;               /*-différencie le 1er nz du reste-----*/
+
   /*-------------Read Loop--------------*/
   /*- WATCH OUT, data in the file is initially saved in CSR (R for Row) -*/
   /*- format, which can be confusing. Because the stucture Mtx is -------*/
@@ -114,7 +144,38 @@ static void get_data_mtx(FILE *file, Mtx *mtx){
     idx++;
     pCol++;
   }
-}// fin get_data()
+}// fin get_data_mtx()
+/*----------------------------------------------------------------------------*/
+/**
+ * \fn void write_data_mtx(FILE *file, Mtx *mtx)
+ * \brief Ecrit les données contenues dans une structure de données
+ *        mtx dans un fichier MatrixMarket.
+ *
+ *
+ * \param file, path vers le fichier où la matrice. (!= NULL)
+ * \param mtx, structure Mtx existante. (!= NULL)
+ *
+ */
+static void write_data_mtx(FILE *file, Mtx *mtx){
+  assert(file != NULL && mtx != NULL);
+
+  unsigned int nz = get_matrix_nz_size(mtx);
+  unsigned int row=1, col, idx=1;
+  double val;
+
+  for(unsigned int i = 0; i < nz; i++){
+
+    val = mtx->xVals->vals[i];
+    col = mtx->iRows->vals[i];
+
+    if(i + SHIFT == mtx->pCols->vals[idx]){
+      row++;
+      idx++;
+    }
+
+    fprintf(file, "%u %u %lf\n", row, col, val);
+  }
+}// fin write_data_mtx()
 /*----------------------------------------------------------------------------*/
 /*----------------------------FONCTIONS & PROCEDURES--------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -197,25 +258,34 @@ Mtx *read_mtx_file(char *filename){
   mtx_t->nz = get_matrix_nz_size(mtx);
   init_sparse_matrix(mtx_t);
 
-
+  /*----Conversion de mtx CSR vers CSC -> mtx_t----*/
   convert(mtx, mtx_t);
 
-  // printf("CSR format:\n");
-  // for(unsigned int k = 0; k < mtx->pCols->size+6; k++){
-  //   printf("%lf %lf %lf\n", mtx->pCols->vals[k], mtx->iRows->vals[k], mtx->xVals->vals[k]);
-  // }
-  // printf("\n\n");
-  // printf("CSC format:\n");
-  // for(unsigned int k = 0; k < mtx_t->pCols->size+12; k++){
-  //   printf("%lf %lf %lf\n", mtx_t->pCols->vals[k], mtx_t->iRows->vals[k], mtx_t->xVals->vals[k]);
-  // }
-
+  /*------On libère mtx (CSR), devenue inutile-----*/
   free_sparse_matrix(mtx);
 
   return mtx_t;
 }// fin read_mtx_file()
 /*----------------------------------------------------------------------------*/
+void write_mtx_file(Mtx *mtx, char *filename){
+  assert(mtx != NULL && filename != NULL);
 
+  Mtx *mtx_t = NULL;
+  mtx_t = create_sparse_matrix();
+  mtx_t->dim = get_matrix_dimensions(mtx);
+  mtx_t->nz = get_matrix_nz_size(mtx);
+  init_sparse_matrix(mtx_t);
+  convert(mtx, mtx_t);
+
+  FILE *fp = fopen(filename, "w");
+  write_banner(fp);
+  write_dimensions(fp, mtx_t);
+  write_data_mtx(fp, mtx_t);
+  fclose(fp);
+
+  free_sparse_matrix(mtx_t);
+}// fin write_mtx_file()
+/*----------------------------------------------------------------------------*/
 
 
 
