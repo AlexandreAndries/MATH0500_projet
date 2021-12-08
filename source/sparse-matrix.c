@@ -73,7 +73,7 @@ unsigned int get_matrix_pCols_size(Mtx *mtx){
 
   return get_array_size(mtx->pCols);
 }// fin get_matrix_pCols_size()
-
+/*----------------------------------------------------------------------------*/
 unsigned int get_matrix_nz_size(Mtx *mtx){
   assert(mtx != NULL);
 

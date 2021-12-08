@@ -93,9 +93,9 @@ Array *create_array(unsigned int size){
   }
 
   array->cap = size ;
-  array->size = 0 ;
+  array->size = size ;
 
-  array->vals = (double *)malloc(size*sizeof(double));
+  array->vals = (double *)calloc(size, sizeof(double));
   if(array->vals == NULL){
     free(array);
     return NULL;
@@ -129,10 +129,10 @@ Array *add_at(Array *array, unsigned int i, double val){
 
   if(array->vals[i] != 0){
     array = shift_right(array, i);
+    array->size++;
   }
 
   array->vals[i] = val;
-  array->size++;
 
   return array;
 }// fin add_at()
@@ -145,6 +145,19 @@ Array *remove_at(Array *array, unsigned int i){
 
   return array;
 }// fin remove_at()
+/*----------------------------------------------------------------------------*/
+double intake_at(Array *array, unsigned int i){
+  assert(array != NULL && array->vals != NULL);
+  double ret;
+
+  if(i < array->size){
+    ret = array->vals[i] ;
+  }else{
+    ret = 0 ;
+  }
+
+  return ret;
+}// fin intake_at()
 /*----------------------------------------------------------------------------*/
 /*--------------------------------FIN DU MODULE-------------------------------*/
 /*----------------------------------------------------------------------------*/

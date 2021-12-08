@@ -63,8 +63,16 @@ static void get_dimensions(FILE *file, Mtx *mtx){
   fscanf(file, "%u %*u %u", &mtx->dim, &mtx->nz);
 }// fin get_dimensions()
 /*----------------------------------------------------------------------------*/
-// WORK IN PROGRESS
-// à spécifier
+/**
+ * \fn void get_data_mtx(FILE *file, Mtx *mtx)
+ * \brief Enregistre les données contenues dans un fichier MatrixMarket dans une
+ *        structure de données mtx.
+ *
+ *
+ * \param file, path vers le fichier contenant la matrice. (!= NULL)
+ * \param mtx, structure Mtx existante mais non-initialisée. (!= NULL)
+ *
+ */
 static void get_data_mtx(FILE *file, Mtx *mtx){
   assert(file != NULL && mtx != NULL);
 
@@ -192,16 +200,15 @@ Mtx *read_mtx_file(char *filename){
 
   convert(mtx, mtx_t);
 
-  printf("CSR format:\n");
-  for(unsigned int k = 0; k < mtx->pCols->size; k++){
-    printf("%lf %lf %lf\n", mtx->pCols->vals[k], mtx->iRows->vals[k], mtx->xVals->vals[k]);
-  }
-  printf("\n\n");
-  printf("CSC format:\n");
-  for(unsigned int k = 0; k < mtx_t->pCols->size; k++){
-    printf("%lf %lf %lf\n", mtx_t->pCols->vals[k], mtx_t->iRows->vals[k], mtx_t->xVals->vals[k]);
-  }
-
+  // printf("CSR format:\n");
+  // for(unsigned int k = 0; k < mtx->pCols->size+6; k++){
+  //   printf("%lf %lf %lf\n", mtx->pCols->vals[k], mtx->iRows->vals[k], mtx->xVals->vals[k]);
+  // }
+  // printf("\n\n");
+  // printf("CSC format:\n");
+  // for(unsigned int k = 0; k < mtx_t->pCols->size+12; k++){
+  //   printf("%lf %lf %lf\n", mtx_t->pCols->vals[k], mtx_t->iRows->vals[k], mtx_t->xVals->vals[k]);
+  // }
 
   free_sparse_matrix(mtx);
 

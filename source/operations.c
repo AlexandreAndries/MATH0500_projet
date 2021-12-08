@@ -100,7 +100,7 @@ void convert(Mtx *mtx, Mtx *matrix_t){
   /*-------------Var Init--------------*/
   unsigned int nRows = get_matrix_dimensions(mtx);
   unsigned int nz = get_matrix_nz_size(mtx);
-  unsigned int tmp = 0, cumSum = 1;
+  unsigned int tmp = 0, cumSum = 1 , temp, idx, end;
 
   unsigned int *colCount = (unsigned int*)calloc(nRows, sizeof(unsigned int));
   unsigned int *sortRow = (unsigned int*)calloc(nz, sizeof(unsigned int));
@@ -123,28 +123,24 @@ void convert(Mtx *mtx, Mtx *matrix_t){
   for(unsigned int k=0; k<nRows; k++){
     colCount[k] = 0;
   }
-
   //--------Code above works -------------------------------
-
-
-  printf("ok\n");
   //--------Test zone --------------------------------------
+  for(unsigned int k=0; k<nRows; k++){
+    if(k == nRows - 1){
+      end = nz+1;
+    }else{
+      end = (unsigned int)mtx->pCols->vals[k+1];
+    }
 
+    for(unsigned int l=mtx->pCols->vals[k]; l<end; l++){
+      temp = (unsigned int)mtx->iRows->vals[l-1];
+      idx = (unsigned int)matrix_t->pCols->vals[temp-1] + colCount[temp-1];
+      colCount[temp-1]++;
 
-
-
-  // for(unsigned int i=0; i<nRows; i++){
-  //   for(unsigned int j=mtx->pCols->vals[i]; j<(mtx->pCols->vals[i+1]-1); j++){
-  //
-  //     idx = matrix_t->pCols->vals[(unsigned int)mtx->iRows->vals[j]]
-  //           + sortRow[(unsigned int)mtx->iRows->vals[j]];
-  //
-  //
-  //     matrix_t->xVals->vals[idx] = mtx->xVals->vals[j];
-  //
-  //     sortRow[(unsigned int)mtx->iRows->vals[j]]++;
-  //   }
-  // }
+      add_at(matrix_t->xVals, idx-1, mtx->xVals->vals[l-1]);
+      add_at(matrix_t->iRows, idx-1, k+1);
+    }
+  }
 
   free(colCount);
 }// fin convert()
