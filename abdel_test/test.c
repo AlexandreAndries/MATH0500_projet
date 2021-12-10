@@ -20,7 +20,7 @@ int main(){
 then we put b values in it
 */
 
-//this is my x vector i don't now why i caal it v (not important)
+//this is my x vector i don't know why i caal it v (not important)
   int vi[size];
   float vx[size];
 
@@ -31,7 +31,7 @@ then we put b values in it
 
 
   int t = 0;
-  float nb_column
+  float nb_column;
 
   for(int i=0 ; i<size ; i++){
 
