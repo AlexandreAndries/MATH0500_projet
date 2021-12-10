@@ -207,7 +207,7 @@ static void get_data_vctr(FILE *file, Vctr *vctr){
  *        mtx dans un fichier MatrixMarket.
  *
  *
- * \param file, path vers le fichier où la matrice. (!= NULL)
+ * \param file, path vers le fichier où écrire la matrice. (!= NULL)
  * \param mtx, structure Mtx existante. (!= NULL)
  *
  */
@@ -231,6 +231,31 @@ static void write_data_mtx(FILE *file, Mtx *mtx){
     fprintf(file, "%u %u %lf\n", row, col, val);
   }
 }// fin write_data_mtx()
+/*----------------------------------------------------------------------------*/
+/**
+ * \fn void write_data_vctr(FILE *file, Vctr *vctr)
+ * \brief Ecrit les données contenues dans une structure de données
+ *        vctr dans un fichier MatrixMarket.
+ *
+ *
+ * \param file, path vers le fichier où écrire le vecteur. (!= NULL)
+ * \param mtx, structure Vctr existante. (!= NULL)
+ *
+ */
+static void write_data_vctr(FILE *file, Vctr *vctr){
+  assert(file != NULL && vctr != NULL);
+
+  unsigned int nz = get_vector_nz_size(vctr);
+  unsigned int row;
+  double val;
+
+  for(unsigned int i = 0; i < nz; i++){
+    val = vctr->xVals->vals[i];
+    row = (unsigned int)vctr->iRows->vals[i];
+
+    fprintf(file, "%u %u %lf\n", row, COL, val);
+  }
+}// fin write_data_vctr()
 /*----------------------------------------------------------------------------*/
 /*----------------------------FONCTIONS & PROCEDURES--------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -361,8 +386,13 @@ Vctr *read_vctr_file(char *filename){
 void write_vctr_file(Vctr *vctr, char *filename){
   assert(vctr != NULL && filename != NULL);
 
+  FILE *fp = fopen(filename, "w");
+  write_banner(fp);
+  write_dimensions_vctr(fp, vctr);
+  write_data_vctr(fp, vctr);
+  fclose(fp);
 }
-
+/*----------------------------------------------------------------------------*/
 
 
 

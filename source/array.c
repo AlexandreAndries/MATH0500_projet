@@ -146,18 +146,5 @@ Array *remove_at(Array *array, unsigned int i){
   return array;
 }// fin remove_at()
 /*----------------------------------------------------------------------------*/
-double intake_at(Array *array, unsigned int i){
-  assert(array != NULL && array->vals != NULL);
-  double ret;
-
-  if(i < array->size){
-    ret = array->vals[i] ;
-  }else{
-    ret = 0 ;
-  }
-
-  return ret;
-}// fin intake_at()
-/*----------------------------------------------------------------------------*/
 /*--------------------------------FIN DU MODULE-------------------------------*/
 /*----------------------------------------------------------------------------*/

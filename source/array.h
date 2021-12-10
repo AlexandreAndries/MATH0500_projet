@@ -53,7 +53,7 @@ typedef struct{
  * \fn Array *create_array(unsigned int size)
  * \brief Crée une structure Array représentant un array de taille "size"
  *
- * \param size, taille du array (> 0)
+ * \param size, taille du array (> 0).
  *
  * \return Un pointeur vers un nouveau array.  NULL en cas d'échec.
  */
@@ -101,8 +101,6 @@ Array *add_at(Array *array, unsigned int i, double val);
  * \return La array modifié, l'élément au rang i a été supprimé.
  */
 Array *remove_at(Array *array, unsigned int i);
-/*----------------------------------------------------------------------------*/
-double intake_at(Array *array, unsigned int i);
 /*----------------------------------------------------------------------------*/
 /*--------------------------------FIN DU HEADER-------------------------------*/
 /*----------------------------------------------------------------------------*/

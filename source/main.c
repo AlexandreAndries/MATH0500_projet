@@ -60,8 +60,8 @@ int main(int argc, char *argv[]){
 
   if(lFile != NULL){L = read_mtx_file(lFile);}
   if(uFile != NULL){U = read_mtx_file(uFile);}
-  if(aFile != NULL){A = read_vctr_file(aFile);}
-  if(xFile != NULL){X = read_vctr_file(xFile);}
+  if(aFile != NULL){A = read_vctr_file(aFile); set_vector_density(A, False);}
+  if(xFile != NULL){X = read_vctr_file(xFile); set_vector_density(X, True);}
 
   if(lFile != NULL){free_sparse_matrix(L);}
   if(uFile != NULL){free_sparse_matrix(U);}
