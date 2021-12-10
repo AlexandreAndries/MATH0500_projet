@@ -33,21 +33,29 @@
 /*----------------------------------------------------------------------------*/
 /*----------------------------FONCTIONS & PROCEDURES--------------------------*/
 /*----------------------------------------------------------------------------*/
-/** !!! MODIFY !!!
- * \fn Mtx *transpose(Mtx *mtx)
- * \brief Calcule et retourne la transposée de la matrice CSC en input.
+/**
+ * \fn void convert(Mtx *mtx, Mtx *matrix_t)
+ * \brief Convertit la matrice en entrée du format CSR au format CSC
+ *        et vice-versa.
  *
- * \param mtx, pointeur sur matrice creuse (!= NULL).
+ * \param mtx, pointeur sur matrice creuse à convertir(!= NULL).
+ * \param matrix_t, pointeur sur matrice creuse, qui contiendra le résultat de
+ *                  la conversion.
  *
- * \return Un pointeur vers une structure Mtx représentant la matrice creuse
- *         transposée.
  */
 void convert(Mtx *mtx, Mtx *matrix_t);
 /*----------------------------------------------------------------------------*/
-// void sort_mtx_iRows(Mtx *mtx, unsigned int start, unsigned int end,
-//                         unsigned int length);
-/*----------------------------------------------------------------------------*/
-
+/**
+ * \fn Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B)
+ * \brief Effectue le produit des deux matrices creuses entrées en arguments.
+ *
+ * \param A, pointeur sur matrice creuse (!= NULL).
+ * \param B, pointeur sur matrice creuse (!= NULL).
+ *
+ * \return une nouvelle matrice creuse, égale au produit des matrices A et B.
+ *
+ */
+Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B);
 /*----------------------------------------------------------------------------*/
 /*--------------------------------FIN DU HEADER-------------------------------*/
 /*----------------------------------------------------------------------------*/
