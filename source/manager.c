@@ -61,7 +61,7 @@ static void write_banner(FILE *file){
 }// fin write_banner()
 /*----------------------------------------------------------------------------*/
 /**
- * \fn void get_dimensions(FILE *file, Mtx *mtx)
+ * \fn void get_dimensions_mtx(FILE *file, Mtx *mtx)
  * \brief Enregistre les données concernant les dimensions de la matrice creuse
  *        et le nombre d'éléments non-nuls qu'elle possède.
  *        Ces données sont enregistrées dans une structure Mtx non-initialisée.
@@ -70,11 +70,27 @@ static void write_banner(FILE *file){
  * \param mtx, structure Mtx existante mais non-initialisée. (!= NULL)
  *
  */
-static void get_dimensions(FILE *file, Mtx *mtx){
+static void get_dimensions_mtx(FILE *file, Mtx *mtx){
   assert(mtx != NULL && file!= NULL);
 
   fscanf(file, "%u %*u %u", &mtx->dim, &mtx->nz);
-}// fin get_dimensions()
+}// fin get_dimensions_mtx()
+/*----------------------------------------------------------------------------*/
+/**
+ * \fn void get_dimensions_vctr(FILE *file, Mtx *mtx)
+ * \brief Enregistre les données concernant la longeur du vecteur creux
+ *        et le nombre d'éléments non-nuls qu'il possède.
+ *        Ces données sont enregistrées dans une structure vctr non-initialisé.
+ *
+ * \param file, path vers le fichier contenant la matrice. (!= NULL)
+ * \param vctr, structure Vctr existante mais non-initialisée. (!= NULL)
+ *
+ */
+static void get_dimensions_vctr(FILE *file, Vctr *vctr){
+  assert(vctr != NULL && file!= NULL);
+
+  fscanf(file, "%u %*u %u", &vctr->dim, &vctr->nz);
+}// fin get_dimensions_vctr()
 /*----------------------------------------------------------------------------*/
 /**
  * \fn void write_dimensions(FILE *file, Mtx *mtx)
@@ -86,11 +102,11 @@ static void get_dimensions(FILE *file, Mtx *mtx){
  * \param mtx, structure Mtx existante. (!= NULL)
  *
  */
-static void write_dimensions(FILE *file, Mtx *mtx){
+static void write_dimensions_mtx(FILE *file, Mtx *mtx){
   assert(mtx != NULL && file!= NULL);
 
   fprintf(file, "%u %u %u\n", mtx->dim, mtx->dim, mtx->nz);
-}// fin get_dimensions()
+}// fin write_dimensions_mtx()
 /*----------------------------------------------------------------------------*/
 /**
  * \fn void get_data_mtx(FILE *file, Mtx *mtx)
@@ -248,7 +264,7 @@ Mtx *read_mtx_file(char *filename){
   /*--------Lecture des données du fichier---------*/
   FILE *fp = fopen(filename, "r");
   skip_banner(fp);
-  get_dimensions(fp, mtx);
+  get_dimensions_mtx(fp, mtx);
   init_sparse_matrix(mtx);
   get_data_mtx(fp, mtx);
   fclose(fp);
@@ -279,15 +295,32 @@ void write_mtx_file(Mtx *mtx, char *filename){
 
   FILE *fp = fopen(filename, "w");
   write_banner(fp);
-  write_dimensions(fp, mtx_t);
+  write_dimensions_mtx(fp, mtx_t);
   write_data_mtx(fp, mtx_t);
   fclose(fp);
 
   free_sparse_matrix(mtx_t);
 }// fin write_mtx_file()
 /*----------------------------------------------------------------------------*/
+Vctr *read_vctr_file(char *filename){
+  assert(filename != NULL);
 
+  Vctr *vctr = NULL;
+  vctr = create_sparse_vector();
 
+  /*--------Lecture des données du fichier---------*/
+  FILE *fp = fopen(filename, "r");
+  skip_banner(fp);
+  get_dimensions_vctr(fp, vctr);
+  // init_sparse_matrix(mtx);
+  // get_data_mtx(fp, mtx);
+  fclose(fp);
+}
+/*----------------------------------------------------------------------------*/
+void write_vctr_file(Vctr *vctr, char *filename){
+  assert(vctr != NULL && filename != NULL);
+
+}
 
 
 

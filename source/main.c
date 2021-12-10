@@ -50,7 +50,7 @@ int main(int argc, char *argv[]){
   char *xFile = NULL;
 
   Mtx *L = NULL;
-  // Mtx *U = NULL;
+  Mtx *U = NULL;
   //vector a
   //vector x
 
@@ -58,9 +58,13 @@ int main(int argc, char *argv[]){
                 operation, &toOperation);
   //operations ... switch case sur l'option -o, différencier les input !! to do
 
-  L = read_mtx_file(lFile); //test
+  if(lFile != NULL){L = read_mtx_file(lFile);}
+  if(uFile != NULL){U = read_mtx_file(uFile);}
+  // if(aFile != NULL){A = read_vctr_file(aFile);}
+  // if(xFile != NULL){X = read_vctr_file(xFile);}
 
-  free_sparse_matrix(L); //test
+  if(lFile != NULL){free_sparse_matrix(L);}
+  if(uFile != NULL){free_sparse_matrix(U);}
   return 0;
 } //fin main()
 /*----------------------------------------------------------------------------*/

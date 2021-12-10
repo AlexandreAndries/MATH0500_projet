@@ -23,6 +23,7 @@
 
 #include "array.h"
 #include "sparse-matrix.h"
+#include "sparse-vector.h"
 #include "operations.h"
 
 /*----------------------------------------------------------------------------*/
@@ -93,6 +94,29 @@ Mtx *read_mtx_file(char *filename);
  *
  */
 void write_mtx_file(Mtx *mtx, char *filename);
+/*----------------------------------------------------------------------------*/
+/**
+ * \fn Vctr *read_vctr_file(char *filename)
+ * \brief Lit un fichier .mtx représentant un vecteur creux et enregistre
+ *        les données du fichier dans une structure Vctr.
+ *
+ * \param filename, path vers le fichier contenant le vecteur creux. (!= NULL)
+ *
+ * \return Un pointeur vers la structure Vctr représentant le vecteur creux
+ *         contenu dans le fichier en argument.  NULL en cas d'échec.
+ */
+Vctr *read_vctr_file(char *filename);
+/*----------------------------------------------------------------------------*/
+/**
+ * \fn void write_mtx_file(Mtx *mtx, char *filename)
+ * \brief Ecrit les données d'une structure Vctr dans un fichier .mtx
+ *        représentant un vecteur creux.
+ *
+ * \param filename, path vers le fichier où écrire le vecteur creux. (!= NULL)
+ * \param vctr, le vecteur creux à écrire dans un fichier. (!= NULL)
+ *
+ */
+void write_vctr_file(Vctr *vctr, char *filename);
 /*----------------------------------------------------------------------------*/
 /*--------------------------------FIN DU HEADER-------------------------------*/
 /*----------------------------------------------------------------------------*/

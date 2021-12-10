@@ -103,8 +103,7 @@ void convert(Mtx *mtx, Mtx *matrix_t){
   unsigned int tmp = 0, cumSum = 1 , temp, idx, end;
 
   unsigned int *colCount = (unsigned int*)calloc(nRows, sizeof(unsigned int));
-  unsigned int *sortRow = (unsigned int*)calloc(nz, sizeof(unsigned int));
-  if(colCount == NULL || sortRow == NULL){
+  if(colCount == NULL){
     printf("Erreur d'allocation mémoire\n");
     exit(-2);
   }
@@ -123,8 +122,7 @@ void convert(Mtx *mtx, Mtx *matrix_t){
   for(unsigned int k=0; k<nRows; k++){
     colCount[k] = 0;
   }
-  //--------Code above works -------------------------------
-  //--------Test zone --------------------------------------
+
   for(unsigned int k=0; k<nRows; k++){
     if(k == nRows - 1){
       end = nz+SHIFT;
