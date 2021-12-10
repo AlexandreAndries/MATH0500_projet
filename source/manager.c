@@ -93,10 +93,10 @@ static void get_dimensions_vctr(FILE *file, Vctr *vctr){
 }// fin get_dimensions_vctr()
 /*----------------------------------------------------------------------------*/
 /**
- * \fn void write_dimensions(FILE *file, Mtx *mtx)
+ * \fn void write_dimensions_mtx(FILE *file, Mtx *mtx)
  * \brief Ecrit les données concernant les dimensions de la matrice creuse
  *        et le nombre d'éléments non-nuls qu'elle possède.
- *        Ces données sont écrite dans le fichier en entrée.
+ *        Ces données sont écrites dans le fichier en entrée.
  *
  * \param file, path vers le fichier où écrire la matrice. (!= NULL)
  * \param mtx, structure Mtx existante. (!= NULL)
@@ -109,13 +109,29 @@ static void write_dimensions_mtx(FILE *file, Mtx *mtx){
 }// fin write_dimensions_mtx()
 /*----------------------------------------------------------------------------*/
 /**
+ * \fn void write_dimensions_vctr(FILE *file, Vctr *vctr)
+ * \brief Ecrit les données concernant les dimensions du vecteur creux
+ *        et le nombre d'éléments non-nuls qu'il possède.
+ *        Ces données sont écrites dans le fichier en entrée.
+ *
+ * \param file, path vers le fichier où écrire le vecteur. (!= NULL)
+ * \param vctr, structure Vctr existante. (!= NULL)
+ *
+ */
+static void write_dimensions_vctr(FILE *file, Vctr *vctr){
+  assert(vctr != NULL && file!= NULL);
+
+  fprintf(file, "%u %u %u\n", vctr->dim, COL, vctr->nz);
+}// fin write_dimensions_vctr()
+/*----------------------------------------------------------------------------*/
+/**
  * \fn void get_data_mtx(FILE *file, Mtx *mtx)
  * \brief Enregistre les données contenues dans un fichier MatrixMarket dans une
- *        structure de données mtx.
+ *        structure de données Mtx.
  *
  *
  * \param file, path vers le fichier contenant la matrice. (!= NULL)
- * \param mtx, structure Mtx existante mais non-initialisée. (!= NULL)
+ * \param mtx, structure Mtx existante et initialisée. (!= NULL)
  *
  */
 static void get_data_mtx(FILE *file, Mtx *mtx){
@@ -161,6 +177,29 @@ static void get_data_mtx(FILE *file, Mtx *mtx){
     pCol++;
   }
 }// fin get_data_mtx()
+/*----------------------------------------------------------------------------*/
+/**
+ * \fn static void get_data_vctr(FILE *file, Vctr *vctr)
+ * \brief Enregistre les données contenues dans un fichier MatrixMarket dans une
+ *        structure de données Vctr.
+ *
+ *
+ * \param file, path vers le fichier contenant le vecteur. (!= NULL)
+ * \param vctr, structure Vctr existante et initialisée. (!= NULL)
+ *
+ */
+static void get_data_vctr(FILE *file, Vctr *vctr){
+  assert(file != NULL && vctr != NULL);
+
+  unsigned int row, idx = 0;
+  double val;
+
+  while(fscanf(file, "%u %*u %lf", &row, &val) != EOF){
+    vctr->xVals = add_at(vctr->xVals, idx, (double)val);
+    vctr->iRows = add_at(vctr->iRows, idx, (double)row);
+    idx++;
+  }
+}
 /*----------------------------------------------------------------------------*/
 /**
  * \fn void write_data_mtx(FILE *file, Mtx *mtx)
@@ -312,10 +351,12 @@ Vctr *read_vctr_file(char *filename){
   FILE *fp = fopen(filename, "r");
   skip_banner(fp);
   get_dimensions_vctr(fp, vctr);
-  // init_sparse_matrix(mtx);
-  // get_data_mtx(fp, mtx);
+  init_sparse_vector(vctr);
+  get_data_vctr(fp, vctr);
   fclose(fp);
-}
+
+  return vctr;
+}// fin read_vctr_file()
 /*----------------------------------------------------------------------------*/
 void write_vctr_file(Vctr *vctr, char *filename){
   assert(vctr != NULL && filename != NULL);

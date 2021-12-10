@@ -51,8 +51,8 @@ int main(int argc, char *argv[]){
 
   Mtx *L = NULL;
   Mtx *U = NULL;
-  //vector a
-  //vector x
+  Vctr *A = NULL;
+  Vctr *X = NULL;
 
   manage_inputs(argc, argv, optstring, &lFile, &uFile, &aFile, &xFile,
                 operation, &toOperation);
@@ -60,11 +60,13 @@ int main(int argc, char *argv[]){
 
   if(lFile != NULL){L = read_mtx_file(lFile);}
   if(uFile != NULL){U = read_mtx_file(uFile);}
-  // if(aFile != NULL){A = read_vctr_file(aFile);}
-  // if(xFile != NULL){X = read_vctr_file(xFile);}
+  if(aFile != NULL){A = read_vctr_file(aFile);}
+  if(xFile != NULL){X = read_vctr_file(xFile);}
 
   if(lFile != NULL){free_sparse_matrix(L);}
   if(uFile != NULL){free_sparse_matrix(U);}
+  if(aFile != NULL){free_sparse_vector(A);}
+  if(xFile != NULL){free_sparse_vector(X);}
   return 0;
 } //fin main()
 /*----------------------------------------------------------------------------*/
