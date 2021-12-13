@@ -78,6 +78,39 @@ void convert(Mtx *mtx, Mtx *matrix_t){
   free(colCount);
 }// fin convert()
 /*----------------------------------------------------------------------------*/
+void solve_dense(Mtx *l , Vctr *b , Vctr *x){
+  assert(mtx != NULL && b != NULL );
+
+  float columns_number;
+  int place=0;
+
+  /*----------inicialiser le x-----------*/
+  for(int i =0 ; i< l->pCols->size ;i++){
+    x->iRows->vals[i]=b->iRows->vals[i];
+    x->xVals->vals[i]=b->xVals->vals[i];
+  }
+
+
+  /*---------l'algorithme principale----------*/
+  for(int i=0 ; i<l->pCols->size ; i++){
+    x->xVals->vals[i]/=l->xVals->vals[l->pCols->vals[i]];
+
+    if(i== (l->pCols->size)-1){
+      columns_number = (l->nz - l->pCols->vals[i]);
+  }
+    else{
+      columns_number = (l->pCols->vals[i+1] - l->pCols->vals[i]);
+  }
+
+    for(int j = place ; j< columns_number+place ;j++){
+      x->xVals->vals[l->iRows->vals[j]] - = ((l->xVals->vals[j] * (x->xVals->vals[i]));
+    }
+    place+=columns_number;
+
+  }
+}//fin solve_dense()
+
+/*----------------------------------------------------------------------------*/
 Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
   assert(A != NULL && B != NULL &&
           (get_matrix_dimensions(A) == get_matrix_dimensions(B)));

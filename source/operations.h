@@ -46,6 +46,19 @@
 void convert(Mtx *mtx, Mtx *matrix_t);
 /*----------------------------------------------------------------------------*/
 /**
+ * \fn void solve_dense(Mtx *l , Vctr *b , Vctr *x)
+ * \brief resoudre un system triangulaire avec un vecteur b dense
+ *
+ *
+ * \param mtx, pointeur sur matrice creuse L (!= NULL).
+ * \param b  , pointeur sur vecteur dense b (!= NULL) .
+ * \param x  , pointeur sur vecteur x declarer comme null au debut .
+ *
+ *
+ */
+void solve_dense(Mtx *l , Vctr *b , Vctr *x);
+/*----------------------------------------------------------------------------*/
+/**
  * \fn Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B)
  * \brief Effectue le produit des deux matrices creuses entrées en arguments.
  *
