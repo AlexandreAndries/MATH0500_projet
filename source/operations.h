@@ -46,8 +46,32 @@
  */
 void convert(Mtx *mtx, Mtx *matrix_t);
 /*----------------------------------------------------------------------------*/
+/**
+ * \fn Vctr *solve_dense_system(Mtx *L, Vctr *b)
+ * \brief Résout le système triangulaire inférieur creux avec L comme membre
+ *        de droite, et b comme membre de gauche. Le membre de gauche est
+ *        dense. La fonction renvoit le vecteur des solutions.
+ *
+ * \param L, pointeur sur matrice creuse triangulaire inférieure (!= NULL).
+ * \param b, pointeur sur vecteur dense (!= NULL).
+ *
+ * \return le vecteur solution.
+ *
+ */
 Vctr *solve_dense_system(Mtx *L, Vctr *b);
 /*----------------------------------------------------------------------------*/
+/**
+ * \fn Vctr *solve_sparse_system(Mtx *L, Vctr *b)
+ * \brief Résout le système triangulaire inférieur dense avec L comme membre
+ *        de droite, et b comme membre de gauche. Le membre de gauche est
+ *        très creux. La fonction renvoit le vecteur des solutions.
+ *
+ * \param L, pointeur sur matrice creuse triangulaire inférieure (!= NULL).
+ * \param b, pointeur sur vecteur creux (!= NULL).
+ *
+ * \return le vecteur solution.
+ *
+ */
 Vctr *solve_sparse_system(Mtx *L, Vctr *b);
 /*----------------------------------------------------------------------------*/
 /**

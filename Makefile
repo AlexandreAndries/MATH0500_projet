@@ -46,5 +46,5 @@ source/sparse-vector.o: source/sparse-vector.c
 	$(CC) -c source/sparse-vector.c -o source/sparse-vector.o $(CFLAGS)
 
 clean:
-	rm -f source/*.o source/*.gch $(EXEC) *~
+	rm -f source/*.o source/*.gch *.mtx $(EXEC) *~
 	clear

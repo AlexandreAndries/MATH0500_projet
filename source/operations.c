@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include <time.h>
 
 #include "array.h"
 #include "sparse-matrix.h"
@@ -83,6 +84,9 @@ Vctr *solve_dense_system(Mtx *L, Vctr *b){
           && get_vector_dimension(b) == get_matrix_dimensions(L));
 
   /*---- Initialisation vecteur solution + variables utiles ----*/
+  time_t start, stop;
+  start = time(NULL);
+
   Vctr *x = create_sparse_vector();
   x->nz = get_vector_dimension(b) ;
   x->dim = get_vector_dimension(b) ;
@@ -129,6 +133,9 @@ Vctr *solve_dense_system(Mtx *L, Vctr *b){
 
   set_vector_nz_size(x, count);
 
+  stop = time(NULL);
+  printf("The elapsed time is %ld seconds (dense)\n", (stop - start));
+
   return x;
 }// solve_dense_system()
 /*----------------------------------------------------------------------------*/
@@ -137,6 +144,9 @@ Vctr *solve_sparse_system(Mtx *L, Vctr *b){
           && get_vector_dimension(b) == get_matrix_dimensions(L));
 
   /*---- Initialisation vecteur solution + variables utiles ----*/
+  time_t start, stop;
+  start = time(NULL);
+
   Vctr *x = create_sparse_vector();
   x->nz = get_vector_dimension(b) ;
   x->dim = get_vector_dimension(b) ;
@@ -185,6 +195,9 @@ Vctr *solve_sparse_system(Mtx *L, Vctr *b){
   }
 
   set_vector_nz_size(x, count);
+
+  stop = time(NULL);
+  printf("The elapsed time is %ld seconds (sparse)\n", (stop - start));
 
   return x;
 }// fin solve_dense_system()

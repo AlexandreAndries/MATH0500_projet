@@ -245,28 +245,16 @@ static void write_data_mtx(FILE *file, Mtx *mtx){
 static void write_data_vctr(FILE *file, Vctr *vctr){
   assert(file != NULL && vctr != NULL);
 
-  unsigned int row, nz, dim;
+  unsigned int row, dim;
   double val;
 
-  if(vctr->isDense == True){
-    nz = get_vector_nz_size(vctr);
-    for(unsigned int i = 0; i < nz; i++){
-      val = vctr->xVals->vals[i];
-      row = (unsigned int)vctr->iRows->vals[i];
+  dim = get_vector_dimension(vctr);
+  for(unsigned int i = 0; i < dim; i++){
+    val = vctr->xVals->vals[i];
+    row = (unsigned int)vctr->iRows->vals[i];
 
-      if(val != 0){
-        fprintf(file, "%u %u %lf\n", row, COL, val);
-      }
-    }
-  }else{
-    dim = get_vector_dimension(vctr);
-    for(unsigned int i = 0; i < dim; i++){
-      val = vctr->xVals->vals[i];
-      row = (unsigned int)vctr->iRows->vals[i];
-
-      if(val != 0){
-        fprintf(file, "%u %u %lf\n", row, COL, val);
-      }
+    if(val != 0){
+      fprintf(file, "%u %u %lf\n", row, COL, val);
     }
   }
 }// fin write_data_vctr()
