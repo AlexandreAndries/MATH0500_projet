@@ -393,27 +393,34 @@ void write_vctr_file(Vctr *vctr, char *filename){
   fclose(fp);
 }
 /*----------------------------------------------------------------------------*/
+void manage_operations(unsigned int op, Mtx *L, Mtx *U, Vctr *a, Vctr *x){
+  assert(op == 1 || op == 2 || op == 3);
 
+  Vctr *outputDense = NULL;
+  char otptDenseFile[] = "dense.result.mtx" ;
 
+  // Vctr *outputSparse = NULL;
+  // char otptSparseFile[] = "sparse.result.mtx" ;
 
+  switch(op){
+    case 1 :
+      assert(L != NULL /*&& a != NULL*/ && x != NULL);
+      printf("Résolution système triangulaire inférieur - dense\n");
+      outputDense = solve_dense_system(L, x);
+      write_vctr_file(outputDense, otptDenseFile);
+      free_sparse_vector(outputDense);
 
+      // printf("Résolution système triangulaire inférieur - creux\n");
+      // outputSparse = solve_dense_system(L, a);
+      // write_vctr_file(outputDense, otptSparseFile);
+      // free_sparse_vector(outputSparse);
 
+      break;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    default :
+      break;
+  }
+}
 /*----------------------------------------------------------------------------*/
 /*--------------------------------FIN DU MODULE-------------------------------*/
 /*----------------------------------------------------------------------------*/

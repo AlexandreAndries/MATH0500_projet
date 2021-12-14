@@ -78,38 +78,82 @@ void convert(Mtx *mtx, Mtx *matrix_t){
   free(colCount);
 }// fin convert()
 /*----------------------------------------------------------------------------*/
-void solve_dense(Mtx *l , Vctr *b , Vctr *x){
-  assert(mtx != NULL && b != NULL );
+Vctr *solve_dense_system(Mtx *L, Vctr *b){
+  assert(L != NULL && b != NULL && get_vector_density(b) == True
+          && get_vector_dimension(b) == get_matrix_dimensions(L));
 
-  float columns_number;
-  int place=0;
+  /*---- Initialisation vecteur solution + variables utiles ----*/
+  Vctr *x = create_sparse_vector();
+  x->nz = get_vector_nz_size(b) ;
+  x->dim = get_vector_dimension(b) ;
+  x->isDense = get_vector_density(b) ;
+  init_sparse_vector(x);
 
-  /*----------inicialiser le x-----------*/
-  for(int i =0 ; i< l->pCols->size ;i++){
-    x->iRows->vals[i]=b->iRows->vals[i];
-    x->xVals->vals[i]=b->xVals->vals[i];
+  unsigned int column_number, place=0 ;
+  unsigned int dim = get_matrix_dimensions(L), nz = get_matrix_nz_size(L);
+
+  for(unsigned int i=0; i<dim; i++){
+    add_at(x->iRows, i, b->iRows->vals[i]);
+    add_at(x->xVals, i, b->xVals->vals[i]);
   }
 
+  /*----------------- Résolution du système --------------------*/
+  for(unsigned int i=0; i<dim; i++){
+    x->xVals->vals[i] /= L->xVals->vals[(unsigned int)L->pCols->vals[i]-SHIFT]; //ok
 
-  /*---------l'algorithme principale----------*/
-  for(int i=0 ; i<l->pCols->size ; i++){
-    x->xVals->vals[i]/=l->xVals->vals[l->pCols->vals[i]];
-
-    if(i== (l->pCols->size)-1){
-      columns_number = (l->nz - l->pCols->vals[i]);
-  }
-    else{
-      columns_number = (l->pCols->vals[i+1] - l->pCols->vals[i]);
-  }
-
-    for(int j = place ; j< columns_number+place ;j++){
-      x->xVals->vals[l->iRows->vals[j]] - = ((l->xVals->vals[j] * (x->xVals->vals[i]));
+    if(i == dim-1){
+      column_number = nz - (unsigned int)L->pCols->vals[i] + SHIFT;                     //ok?
+    }else{
+      column_number = (unsigned int)(L->pCols->vals[i+1] - L->pCols->vals[i]);  //ok
     }
-    place+=columns_number;
 
+    for(unsigned int j = place+1 ; j < column_number+place; j++){
+      x->xVals->vals[(unsigned int)L->iRows->vals[j]-SHIFT] -=
+                                            L->xVals->vals[j]*x->xVals->vals[i];
+    }
+
+    place += column_number;
   }
-}//fin solve_dense()
 
+  printf("\n\nresult:\n");
+  for(unsigned short k = 0; k<dim; k++){
+    printf("%lf\n", x->xVals->vals[k]);
+  }
+
+  return x;
+}
+/*----------------------------------------------------------------------------*/
+// void solve_dense(Mtx *l , Vctr *b , Vctr *x){
+//   assert(mtx != NULL && b != NULL );
+//
+//   float columns_number;
+//   int place=0;
+//
+//   /*----------inicialiser le x-----------*/
+//   for(int i =0 ; i< l->pCols->size ;i++){
+//     x->iRows->vals[i]=b->iRows->vals[i];
+//     x->xVals->vals[i]=b->xVals->vals[i];
+//   }
+//
+//
+//   /*---------l'algorithme principale----------*/
+//   for(int i=0 ; i<l->pCols->size ; i++){
+//     x->xVals->vals[i]/=l->xVals->vals[l->pCols->vals[i]];
+//
+//     if(i== (l->pCols->size)-1){
+//       columns_number = (l->nz - l->pCols->vals[i]);
+//   }
+//     else{
+//       columns_number = (l->pCols->vals[i+1] - l->pCols->vals[i]);
+//   }
+//
+//     for(int j = place ; j< columns_number+place ;j++){
+//       x->xVals->vals[l->iRows->vals[j]] - = ((l->xVals->vals[j] * (x->xVals->vals[i]));
+//     }
+//     place+=columns_number;
+//
+//   }
+// }//fin solve_dense()
 /*----------------------------------------------------------------------------*/
 Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
   assert(A != NULL && B != NULL &&

@@ -40,8 +40,8 @@ int main(int argc, char *argv[]){
    */
   const char *optstring = ":ho:l:u:a:x:";
 
-  unsigned short tmp = 0;
-  unsigned short *operation = &tmp;
+  unsigned short op = 0;
+  unsigned short *operation = &op;
   unsigned short *toOperation = NULL;
 
   char *lFile = NULL;
@@ -56,12 +56,13 @@ int main(int argc, char *argv[]){
 
   manage_inputs(argc, argv, optstring, &lFile, &uFile, &aFile, &xFile,
                 operation, &toOperation);
-  //operations ... switch case sur l'option -o, différencier les input !! to do
 
   if(lFile != NULL){L = read_mtx_file(lFile);}
   if(uFile != NULL){U = read_mtx_file(uFile);}
   if(aFile != NULL){A = read_vctr_file(aFile); set_vector_density(A, False);}
   if(xFile != NULL){X = read_vctr_file(xFile); set_vector_density(X, True);}
+
+  manage_operations(op, L, U, A, X); //not finished
 
   if(lFile != NULL){free_sparse_matrix(L);}
   if(uFile != NULL){free_sparse_matrix(U);}

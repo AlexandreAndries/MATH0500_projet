@@ -20,6 +20,7 @@
 
 #include "array.h"
 #include "sparse-matrix.h"
+#include "sparse-vector.h"
 
 /*----------------------------------------------------------------------------*/
 /*--------------------------------INCLUDE GUARD-------------------------------*/
@@ -56,7 +57,7 @@ void convert(Mtx *mtx, Mtx *matrix_t);
  *
  *
  */
-void solve_dense(Mtx *l , Vctr *b , Vctr *x);
+Vctr *solve_dense_system(Mtx *L, Vctr *b);
 /*----------------------------------------------------------------------------*/
 /**
  * \fn Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B)
