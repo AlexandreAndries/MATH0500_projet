@@ -245,16 +245,28 @@ static void write_data_mtx(FILE *file, Mtx *mtx){
 static void write_data_vctr(FILE *file, Vctr *vctr){
   assert(file != NULL && vctr != NULL);
 
-  unsigned int nz = get_vector_nz_size(vctr);
-  unsigned int row;
+  unsigned int row, nz, dim;
   double val;
 
-  for(unsigned int i = 0; i < nz; i++){
-    val = vctr->xVals->vals[i];
-    row = (unsigned int)vctr->iRows->vals[i];
+  if(vctr->isDense == True){
+    nz = get_vector_nz_size(vctr);
+    for(unsigned int i = 0; i < nz; i++){
+      val = vctr->xVals->vals[i];
+      row = (unsigned int)vctr->iRows->vals[i];
 
-    if(val != 0){
-      fprintf(file, "%u %u %lf\n", row, COL, val);
+      if(val != 0){
+        fprintf(file, "%u %u %lf\n", row, COL, val);
+      }
+    }
+  }else{
+    dim = get_vector_dimension(vctr);
+    for(unsigned int i = 0; i < dim; i++){
+      val = vctr->xVals->vals[i];
+      row = (unsigned int)vctr->iRows->vals[i];
+
+      if(val != 0){
+        fprintf(file, "%u %u %lf\n", row, COL, val);
+      }
     }
   }
 }// fin write_data_vctr()
@@ -401,21 +413,21 @@ void manage_operations(unsigned int op, Mtx *L, Mtx *U, Vctr *a, Vctr *x){
   Vctr *outputDense = NULL;
   char otptDenseFile[] = "dense.result.mtx" ;
 
-  // Vctr *outputSparse = NULL;
-  // char otptSparseFile[] = "sparse.result.mtx" ;
+  Vctr *outputSparse = NULL;
+  char otptSparseFile[] = "sparse.result.mtx" ;
 
   switch(op){
     case 1 :
-      assert(L != NULL /*&& a != NULL*/ && x != NULL);
+      assert(L != NULL && a != NULL && x != NULL);
       printf("Résolution système triangulaire inférieur - dense\n");
       outputDense = solve_dense_system(L, x);
       write_vctr_file(outputDense, otptDenseFile);
       free_sparse_vector(outputDense);
 
-      // printf("Résolution système triangulaire inférieur - creux\n");
-      // outputSparse = solve_dense_system(L, a);
-      // write_vctr_file(outputDense, otptSparseFile);
-      // free_sparse_vector(outputSparse);
+      printf("Résolution système triangulaire inférieur - creux\n");
+      outputSparse = solve_sparse_system(L, a);
+      write_vctr_file(outputDense, otptSparseFile);
+      free_sparse_vector(outputSparse);
 
       break;
 

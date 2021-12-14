@@ -132,19 +132,62 @@ Vctr *solve_dense_system(Mtx *L, Vctr *b){
   return x;
 }// solve_dense_system()
 /*----------------------------------------------------------------------------*/
+Vctr *solve_sparse_system(Mtx *L, Vctr *b){
+  assert(L != NULL && b != NULL && get_vector_density(b) == False
+          && get_vector_dimension(b) == get_matrix_dimensions(L));
 
-// Vctr *solve_sparse_system(Mtx *L, Vctr *b){
-//   assert(L != NULL && b != NULL && get_vector_density(b) == False
-//           && get_vector_dimension(b) == get_matrix_dimensions(L));
-//
-//   /*---- Initialisation vecteur solution + variables utiles ----*/
-//   Vctr *x = create_sparse_vector();
-//   x->nz = get_vector_nz_size(b) ;
-//   x->dim = get_vector_dimension(b) ;
-//   x->isDense = get_vector_density(b) ;
-//   init_sparse_vector(x);
-//
-// }
+  /*---- Initialisation vecteur solution + variables utiles ----*/
+  Vctr *x = create_sparse_vector();
+  x->nz = get_vector_dimension(b) ;
+  x->dim = get_vector_dimension(b) ;
+  x->isDense = get_vector_density(b) ;
+  init_sparse_vector(x);
+
+  unsigned int column_number, place=0, m=0, n=0, count=0 ;
+  unsigned int dim = get_matrix_dimensions(L), nz = get_matrix_nz_size(L);
+
+  while(m < get_vector_nz_size(b)){
+    if(L->iRows->vals[n] == b->iRows->vals[m]){
+      x->xVals->vals[(unsigned int)L->iRows->vals[n]-SHIFT] = b->xVals->vals[m];
+      n = 0;
+      m++ ;
+    }else if(L->iRows->vals[n] != b->iRows->vals[m] && n == nz){
+      n = 0;
+      m++ ;
+    }else{
+      n++ ;
+    }
+  }
+
+  /*----------------- Résolution du système --------------------*/
+  for(unsigned int i=0; i<dim; i++){
+    add_at(x->iRows, i, i+SHIFT);
+
+    if(i>0 && x->xVals->vals[i-SHIFT]!=0){count++;}
+
+    x->xVals->vals[i] /= L->xVals->vals[(unsigned int)L->pCols->vals[i]-SHIFT];
+
+    if(i == dim-1){
+      column_number = nz - (unsigned int)L->pCols->vals[i]+SHIFT;
+    }else{
+      column_number = (unsigned int)(L->pCols->vals[i+1] - L->pCols->vals[i]);
+    }
+
+    for(unsigned int j = place+1 ; j < column_number+place; j++){
+      if(x->xVals->vals[(unsigned int)L->iRows->vals[j]-SHIFT] != 0
+        || (L->xVals->vals[j]!=0 && x->xVals->vals[i]!=0)){
+          x->xVals->vals[(unsigned int)L->iRows->vals[j]-SHIFT] -=
+                                            L->xVals->vals[j]*x->xVals->vals[i];
+        }
+    }
+
+    place += column_number;
+  }
+
+  set_vector_nz_size(x, count);
+
+  return x;
+}// fin solve_dense_system()
 /*----------------------------------------------------------------------------*/
 Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
   assert(A != NULL && B != NULL &&
