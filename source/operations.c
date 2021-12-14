@@ -99,12 +99,12 @@ Vctr *solve_dense_system(Mtx *L, Vctr *b){
 
   /*----------------- Résolution du système --------------------*/
   for(unsigned int i=0; i<dim; i++){
-    x->xVals->vals[i] /= L->xVals->vals[(unsigned int)L->pCols->vals[i]-SHIFT]; //ok
+    x->xVals->vals[i] /= L->xVals->vals[(unsigned int)L->pCols->vals[i]-SHIFT];
 
     if(i == dim-1){
-      column_number = nz - (unsigned int)L->pCols->vals[i] + SHIFT;                     //ok?
+      column_number = nz - (unsigned int)L->pCols->vals[i]+SHIFT;
     }else{
-      column_number = (unsigned int)(L->pCols->vals[i+1] - L->pCols->vals[i]);  //ok
+      column_number = (unsigned int)(L->pCols->vals[i+1] - L->pCols->vals[i]);
     }
 
     for(unsigned int j = place+1 ; j < column_number+place; j++){
@@ -113,11 +113,6 @@ Vctr *solve_dense_system(Mtx *L, Vctr *b){
     }
 
     place += column_number;
-  }
-
-  printf("\n\nresult:\n");
-  for(unsigned short k = 0; k<dim; k++){
-    printf("%lf\n", x->xVals->vals[k]);
   }
 
   return x;
