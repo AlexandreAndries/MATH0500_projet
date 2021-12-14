@@ -404,6 +404,9 @@ void manage_operations(unsigned int op, Mtx *L, Mtx *U, Vctr *a, Vctr *x){
   Vctr *outputSparse = NULL;
   char otptSparseFile[] = "sparse.result.mtx" ;
 
+  Mtx *outputProduct = NULL;
+  char otptProductFile[] = "product.result.mtx" ;
+
   switch(op){
     case 1 :
       assert(L != NULL && a != NULL && x != NULL);
@@ -416,6 +419,15 @@ void manage_operations(unsigned int op, Mtx *L, Mtx *U, Vctr *a, Vctr *x){
       outputSparse = solve_sparse_system(L, a);
       write_vctr_file(outputDense, otptSparseFile);
       free_sparse_vector(outputSparse);
+
+      break;
+
+    case 2 :
+      assert(L != NULL && U != NULL);
+      printf("Résolution produit matriciel L*U\n");
+      outputProduct = product_of_sparse_matrices(L, U);
+      write_mtx_file(outputProduct, otptProductFile);
+      free_sparse_matrix(outputProduct);
 
       break;
 
