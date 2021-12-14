@@ -71,6 +71,12 @@ unsigned int get_vector_nz_size(Vctr *vctr){
   return vctr->nz;
 }// fin get_vector_nz_size()
 /*----------------------------------------------------------------------------*/
+void set_vector_nz_size(Vctr *vctr, unsigned int nz){
+  assert(vctr != NULL);
+
+  vctr->nz = nz;
+}// fin set_vector_nz_size()
+/*----------------------------------------------------------------------------*/
 void set_vector_density(Vctr *vctr, Boolean density){
   assert(vctr != NULL && (density==True || density==False));
 

@@ -104,6 +104,16 @@ unsigned int get_vector_dimension(Vctr *vctr);
 unsigned int get_vector_nz_size(Vctr *vctr);
 /*----------------------------------------------------------------------------*/
 /**
+ * \fn void set_vector_nz_size(Vctr *vctr, unsigned int nz)
+ * \brief Modifie la quantitée d'éléments non-nuls contenu dans le vecteur.
+ *
+ * \param vctr, pointeur sur vecteur creux (!= NULL).
+ * \param nz, nouveau nombre d'éléments non-nuls.
+ *
+ */
+void set_vector_nz_size(Vctr *vctr, unsigned int nz);
+/*----------------------------------------------------------------------------*/
+/**
  * \fn void set_vector_density(Vctr *vctr, Boolean density)
  * \brief Définit l'attribut "isDense" du vecteur sur base de l'argument entré.
  *

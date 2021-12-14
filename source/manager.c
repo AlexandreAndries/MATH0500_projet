@@ -253,7 +253,9 @@ static void write_data_vctr(FILE *file, Vctr *vctr){
     val = vctr->xVals->vals[i];
     row = (unsigned int)vctr->iRows->vals[i];
 
-    fprintf(file, "%u %u %lf\n", row, COL, val);
+    if(val != 0){
+      fprintf(file, "%u %u %lf\n", row, COL, val);
+    }
   }
 }// fin write_data_vctr()
 /*----------------------------------------------------------------------------*/
