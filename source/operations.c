@@ -219,6 +219,7 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
   unsigned int dim = get_matrix_dimensions(A);;
   unsigned int idx, nextCol;
   unsigned int nz = 0, rowPos, index, count=0;
+  double val;
 
   unsigned int *w = (unsigned int *)calloc(dim, sizeof(unsigned int));
   unsigned int *x = (unsigned int *)calloc(dim, sizeof(unsigned int));
@@ -237,9 +238,9 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
     }
 
     for(unsigned int j = idx; j< nextCol; j++){
-      rowPos = B->iRows->vals[j]-SHIFT;
+      rowPos = B->iRows->vals[j] -SHIFT;
 
-      for(unsigned int l = A->pCols->vals[rowPos];
+      for(unsigned int l = A->pCols->vals[rowPos] -SHIFT;
         l<A->pCols->vals[rowPos+1]; l++){
 
         index = A->iRows->vals[l];
@@ -251,17 +252,58 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
       }
     }
 
-    add_at(C->pCols, i+1, count+C->pCols->vals[i]-SHIFT);
+    add_at(C->pCols, i+1, count+C->pCols->vals[i] -SHIFT);
     count = 0;
     for(unsigned int l=0; l<dim; l++){
       if(w[l] != 0){w[l] =0;}
     }
   }
 
+  for(unsigned int h=0; h<dim; h++){
+    printf("%lf\n", C->pCols->vals[h]);
+  }
+
   /*--- 2. Calculs --------------------------*/
   C->nz = nz;
-  printf("nz de C = %u\n", nz);
+  printf("\n nz de C = %u\n", nz);
   count = 0;
+
+  for(unsigned int i=0; i<dim;i++){
+
+    if(i == dim-1){
+      idx = B->pCols->vals[i] -SHIFT;
+      nextCol = nz_B ;
+    }else{
+      idx = B->pCols->vals[i] -SHIFT;
+      nextCol = B->pCols->vals[i+1] -SHIFT;
+    }
+
+    for(unsigned int j = idx; j< nextCol; j++){
+      //here
+      val = B->xVals->vals[j];
+      rowPos = B->iRows->vals[j] -SHIFT;
+
+
+
+
+
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -272,45 +314,9 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
   /*------------ Renvoit du résultat final tq C = A*B -------------*/
   free(w);
   free(x);
+
   return C;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}// fin product_of_sparse_matrices()
 /*----------------------------------------------------------------------------*/
 /*--------------------------------FIN DU MODULE-------------------------------*/
 /*----------------------------------------------------------------------------*/
