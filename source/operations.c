@@ -225,8 +225,12 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
   unsigned int *x = (unsigned int *)calloc(dim, sizeof(unsigned int));
 
   /*---- Création et init. des variables nécessaires au calcul ----*/
+  /*-----------------------------------------*/
   /*--- Calcul de la colonne de C -----------*/
+  /*-----------------------------------------*/
   /*--- 1. Déterminer les non-nuls de C -----*/
+  /*-----------------------------------------*/
+
   for(unsigned int i = 0; i < dim; i++){
 
     if(i == dim-1){
@@ -241,7 +245,7 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
       rowPos = B->iRows->vals[j] -SHIFT;
 
       for(unsigned int l = A->pCols->vals[rowPos] -SHIFT;
-        l<A->pCols->vals[rowPos+1]; l++){
+        l<A->pCols->vals[rowPos+1]+SHIFT; l++){
 
         index = A->iRows->vals[l];
         if(w[index] == 0){
@@ -263,9 +267,11 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
     printf("%lf\n", C->pCols->vals[h]);
   }
 
+  /*-----------------------------------------*/
   /*--- 2. Calculs --------------------------*/
+  /*-----------------------------------------*/
   C->nz = nz;
-  printf("\n nz de C = %u\n", nz);
+  printf("\nNbr de nz dans C = %u\n", nz);
   count = 0;
 
   for(unsigned int i=0; i<dim;i++){
