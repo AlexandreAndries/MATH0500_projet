@@ -8,7 +8,7 @@
  * \version 0.1
  * \date 10/11/2021
  *
- * Ce fichier contient les les définitions des fonctions utilisées
+ * Ce fichier contient les définitions des fonctions utilisées
  * dans la gestion des calculs et opérations sur une matrice creuse,
  * entre deux matrices creuses, entre une matrice creuse et
  * un vecteur creux (resp. un vecteur dense).
@@ -207,6 +207,9 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
           (get_matrix_dimensions(A) == get_matrix_dimensions(B)));
 
   /*--- Création et init. de la matrice C pour résoudre C = A*B ---*/
+  time_t start, stop;
+  start = time(NULL);
+
   Mtx *C = create_sparse_matrix();
   if(C == NULL){return NULL;}
 
@@ -216,7 +219,7 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
   init_sparse_matrix(C);
   add_at(C->pCols, 0, 1);
 
-  unsigned int dim = get_matrix_dimensions(A);;
+  unsigned int dim = get_matrix_dimensions(A);
   unsigned int idx, nextCol;
   unsigned int nz = 0, rowPos, index, count=0;
   double val, val2;
@@ -241,7 +244,7 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
       nextCol = B->pCols->vals[i+1] -SHIFT;
     }
 
-    for(unsigned int j = idx; j<nextCol; j++){
+    for(unsigned int j = idx; j < nextCol; j++){
       rowPos = B->iRows->vals[j] -SHIFT;
 
       for(unsigned int l = A->pCols->vals[rowPos] -SHIFT;
@@ -258,31 +261,27 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
 
     add_at(C->pCols, i+1, count+C->pCols->vals[i]);
     count = 0;
-    for(unsigned int l=0; l<dim; l++){
-      if(w[l] != 0){w[l] =0;}
-    }
-  }
+    free(w);
+    w = (unsigned int *)calloc(dim, sizeof(unsigned int));
 
-  for(unsigned int h=0; h<dim; h++){
-    printf("%lf\n", C->pCols->vals[h]);                                         //temporary
   }
 
   /*-----------------------------------------*/
   /*--- 2. Calculs des non-nuls de C --------*/
   /*-----------------------------------------*/
   C->nz = nz;
-  printf("\nNbr de nz dans C = %u\n", nz);                                      //temporary
+  printf("\nNbr de nz dans C = %u\n\n", nz);                                    //temporary
   count = 0;
 
-  C->iRows->vals = (double *)realloc(C->iRows->vals, nz*sizeof(double));
+  C->iRows->vals = (double *)realloc(C->iRows->vals, (nz+1)*sizeof(double));
   if(C->iRows->vals==NULL){printf("Erreur de réallocation!\n"); exit(-2);}
-  C->iRows->size = nz;
-  C->iRows->cap = nz;
+  C->iRows->size = nz+1;
+  C->iRows->cap = nz+1;
 
-  C->xVals->vals = (double *)realloc(C->xVals->vals, nz*sizeof(double));
+  C->xVals->vals = (double *)realloc(C->xVals->vals, (nz+1)*sizeof(double));
   if(C->xVals->vals==NULL){printf("Erreur de réallocation!\n"); exit(-2);}
-  C->xVals->size = nz;
-  C->xVals->cap = nz;
+  C->xVals->size = nz+1;
+  C->xVals->cap = nz+1;
 
   for(unsigned int i=0; i<dim;i++){
 
@@ -294,7 +293,7 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
       nextCol = B->pCols->vals[i+1] -SHIFT;
     }
 
-    for(unsigned int j = idx; j< nextCol; j++){
+    for(unsigned int j = idx; j < nextCol; j++){
 
       val = B->xVals->vals[j];
       rowPos = B->iRows->vals[j] -SHIFT;
@@ -314,11 +313,8 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
         add_at(C->iRows, count, p+SHIFT);
         add_at(C->xVals, count, x[p]);
         count++;
+        if(x[p]!=0){x[p] = 0;}
       }
-    }
-
-    for(unsigned int q=0; q<dim; q++){
-      if(x[q]!=0){x[q] = 0;}
     }
   }
 
@@ -327,7 +323,10 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
     printf("iRows = %lf --- xVals = %lf\n", C->iRows->vals[v], C->xVals->vals[v]); //temporary
   }
 
-  /*------------ Renvoit du résultat final tq C = A*B -------------*/
+  /*------------ Renvoi du résultat final tq C = A*B --------------*/
+  stop = time(NULL);
+  printf("The elapsed time is %ld seconds (product)\n", (stop - start));
+
   free(w);
   free(x);
 

@@ -429,8 +429,10 @@ void manage_operations(unsigned int op, Mtx *L, Mtx *U, Vctr *a, Vctr *x){
       printf("Résolution produit matriciel L*U\n");
       outputProduct = product_of_sparse_matrices(L, U);
       printf("fin\n");
-      // write_mtx_file(outputProduct, otptProductFile);
-      // free_sparse_matrix(outputProduct);
+      write_mtx_file(outputProduct, otptProductFile);
+      printf("written\n");
+      free_sparse_matrix(outputProduct);
+      printf("freed\n");
 
       break;
 
