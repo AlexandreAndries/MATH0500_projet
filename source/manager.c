@@ -410,6 +410,7 @@ void manage_operations(unsigned int op, Mtx *L, Mtx *U, Vctr *a, Vctr *x){
   switch(op){
     case 1 :
       assert(L != NULL && a != NULL && x != NULL);
+
       printf("Résolution système triangulaire inférieur - dense\n");
       outputDense = solve_dense_system(L, x);
       write_vctr_file(outputDense, otptDenseFile);
@@ -424,12 +425,17 @@ void manage_operations(unsigned int op, Mtx *L, Mtx *U, Vctr *a, Vctr *x){
 
     case 2 :
       assert(L != NULL && U != NULL);
+
       printf("Résolution produit matriciel L*U\n");
       outputProduct = product_of_sparse_matrices(L, U);
-      write_mtx_file(outputProduct, otptProductFile);
-      free_sparse_matrix(outputProduct);
+      // write_mtx_file(outputProduct, otptProductFile);
+      // free_sparse_matrix(outputProduct);
+      printf("\nFIN\n");
 
       break;
+
+    case 3 :
+
 
     default :
       break;

@@ -200,7 +200,7 @@ Vctr *solve_sparse_system(Mtx *L, Vctr *b){
   printf("The elapsed time is %ld seconds (sparse)\n", (stop - start));
 
   return x;
-}// fin solve_dense_system()
+}// fin solve_sparse_system()
 /*----------------------------------------------------------------------------*/
 Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
   assert(A != NULL && B != NULL &&
@@ -214,14 +214,64 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
   C->dim = get_matrix_dimensions(A) ;
   C->nz = (nz_A > nz_B) ? nz_A : nz_B ;
   init_sparse_matrix(C);
+  add_at(C->pCols, 0, 1);
+
+  unsigned int dim = get_matrix_dimensions(A);;
+  unsigned int idx, nextCol;
+  unsigned int nz = 0, rowPos, index, count=0;
+
+  unsigned int *w = (unsigned int *)calloc(dim, sizeof(unsigned int));
+  unsigned int *x = (unsigned int *)calloc(dim, sizeof(unsigned int));
 
   /*---- Création et init. des variables nécessaires au calcul ----*/
+  /*--- Calcul de la colonne de C -----------*/
+  /*--- 1. Déterminer les non-nuls de C -----*/
+  for(unsigned int i = 0; i < dim; i++){
+
+    if(i == dim-1){
+      idx = B->pCols->vals[i] -SHIFT;
+      nextCol = nz_B ;
+    }else{
+      idx = B->pCols->vals[i] -SHIFT;
+      nextCol = B->pCols->vals[i+1] -SHIFT;
+    }
+
+    for(unsigned int j = idx; j< nextCol; j++){
+      rowPos = B->iRows->vals[j]-SHIFT;
+
+      for(unsigned int l = A->pCols->vals[rowPos];
+        l<A->pCols->vals[rowPos+1]; l++){
+
+        index = A->iRows->vals[l];
+        if(w[index] == 0){
+          w[index] = 1;
+          nz++;
+          count++;
+        }
+      }
+    }
+
+    add_at(C->pCols, i+1, count+C->pCols->vals[i]-SHIFT);
+    count = 0;
+    for(unsigned int l=0; l<dim; l++){
+      if(w[l] != 0){w[l] =0;}
+    }
+  }
+
+  /*--- 2. Calculs --------------------------*/
+  C->nz = nz;
+  printf("nz de C = %u\n", nz);
+  count = 0;
+
+
 
 
 
 
 
   /*------------ Renvoit du résultat final tq C = A*B -------------*/
+  free(w);
+  free(x);
   return C;
 }
 
