@@ -245,7 +245,7 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
       rowPos = B->iRows->vals[j] -SHIFT;
 
       for(unsigned int l = A->pCols->vals[rowPos] -SHIFT;
-        l<A->pCols->vals[rowPos+1]+SHIFT; l++){
+        l<A->pCols->vals[rowPos+1]-SHIFT; l++){
 
         index = A->iRows->vals[l];
         if(w[index] == 0){
@@ -256,7 +256,7 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
       }
     }
 
-    add_at(C->pCols, i+1, count+C->pCols->vals[i] -SHIFT);
+    add_at(C->pCols, i+1, count+C->pCols->vals[i]);
     count = 0;
     for(unsigned int l=0; l<dim; l++){
       if(w[l] != 0){w[l] =0;}
