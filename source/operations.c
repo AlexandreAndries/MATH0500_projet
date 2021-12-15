@@ -219,7 +219,7 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
   unsigned int dim = get_matrix_dimensions(A);;
   unsigned int idx, nextCol;
   unsigned int nz = 0, rowPos, index, count=0;
-  double val;
+  double val, val2;
 
   unsigned int *w = (unsigned int *)calloc(dim, sizeof(unsigned int));
   unsigned int *x = (unsigned int *)calloc(dim, sizeof(unsigned int));
@@ -236,12 +236,13 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
     if(i == dim-1){
       idx = B->pCols->vals[i] -SHIFT;
       nextCol = nz_B ;
+      printf("test\n");
     }else{
       idx = B->pCols->vals[i] -SHIFT;
       nextCol = B->pCols->vals[i+1] -SHIFT;
     }
 
-    for(unsigned int j = idx; j< nextCol; j++){
+    for(unsigned int j = idx; j<nextCol; j++){
       rowPos = B->iRows->vals[j] -SHIFT;
 
       for(unsigned int l = A->pCols->vals[rowPos] -SHIFT;
@@ -274,6 +275,16 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
   printf("\nNbr de nz dans C = %u\n", nz);
   count = 0;
 
+  C->iRows->vals = (double *)realloc(C->iRows->vals, nz*sizeof(double));
+  if(C->iRows->vals==NULL){printf("Erreur de réallocation!\n"); exit(-2);}
+  C->iRows->size = nz;
+  C->iRows->cap = nz;
+
+  C->xVals->vals = (double *)realloc(C->xVals->vals, nz*sizeof(double));
+  if(C->xVals->vals==NULL){printf("Erreur de réallocation!\n"); exit(-2);}
+  C->xVals->size = nz;
+  C->xVals->cap = nz;
+
   for(unsigned int i=0; i<dim;i++){
 
     if(i == dim-1){
@@ -289,12 +300,33 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
       val = B->xVals->vals[j];
       rowPos = B->iRows->vals[j] -SHIFT;
 
+      for(unsigned int l = A->pCols->vals[rowPos] -SHIFT;
+        l<A->pCols->vals[rowPos+1]-SHIFT; l++){
 
+        index = A->iRows->vals[l];
+        val2 = A->xVals->vals[l];
 
+        x[index] += val * val2;
+      }
+    }
 
+    for(unsigned int p=0; p<dim; p++){
+      if(x[p] != 0){
+        add_at(C->iRows, count, p);
+        add_at(C->xVals, count, x[p]);
+        count++;
+      }
+    }
 
+    for(unsigned int q=0; q<dim; q++){
+      if(x[q]!=0){x[q] = 0;}
     }
   }
+
+  for(unsigned int v=0; v<nz; v++){
+    printf("iRows = %lf --- xVals = %lf\n", C->iRows->vals[v], C->xVals->vals[v]);
+  }
+
 
 
 
