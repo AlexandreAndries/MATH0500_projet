@@ -118,6 +118,22 @@ Vctr *read_vctr_file(char *filename);
  */
 void write_vctr_file(Vctr *vctr, char *filename);
 /*----------------------------------------------------------------------------*/
+/**
+ * \fn void manage_operations(unsigned int op, Mtx *L, Mtx *U, Vctr *a, Vctr *x)
+ * \brief Permet la gestion des opérations à effectuer par le programme en
+ *        fonction du choix d'option de l'utilisateur.
+ *        Les options sont au choix :
+ *          1. Résolution des équations Lb = a et Lb = x (b vecteur inconnu).
+ *          2. Résolution du produit L*U.
+ *          3. Résolutions successives des options 1 et 2.
+ *
+ * \param op, l'option choisie par l'utilisateur (1/2/3).
+ * \param L, matrice L triangulaire inférieure creuse.
+ * \param U, matrice U triangulaire supérieure creuse.
+ * \param a, vecteur creux.
+ * \param x, vecteur dense.
+ *
+ */
 void manage_operations(unsigned int op, Mtx *L, Mtx *U, Vctr *a, Vctr *x);
 /*----------------------------------------------------------------------------*/
 /*--------------------------------FIN DU HEADER-------------------------------*/

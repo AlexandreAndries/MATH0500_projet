@@ -1,17 +1,22 @@
-#ifndef __BOOLEAN__
-#define __BOOLEAN__
-
 /**
  * \file boolean.h
  * \brief ADT for managing the Boolean type
- * \author Benoit Donnet -- Université de Liège (ULg)
+ * \author Andries Alexandre s196948
+ * \author Khaliphi Abdelilah s204896
  * \version 0.1
- * \date 04/04/2014
+ * \date 10/11/2021
  *
  * Presents a boolean as an abstract data type
  */
 
-
+/*----------------------------------------------------------------------------*/
+/*--------------------------------INCLUDE GUARD-------------------------------*/
+/*----------------------------------------------------------------------------*/
+#ifndef __BOOLEAN__
+#define __BOOLEAN__
+/*----------------------------------------------------------------------------*/
+/*----------------------------STRUCTURES DE DONNEES---------------------------*/
+/*----------------------------------------------------------------------------*/
 /**
  * \struct Boolean
  * \brief Data structure representing a boolean.
@@ -20,7 +25,9 @@ typedef enum{
     False,
     True
 }Boolean;
-
+/*----------------------------------------------------------------------------*/
+/*----------------------------FONCTIONS & PROCEDURES--------------------------*/
+/*----------------------------------------------------------------------------*/
 /**
  * \fn Boolean and(Boolean x, Boolean y)
  * \brief Performs the logical AND between two booleans.
@@ -52,5 +59,7 @@ Boolean or(Boolean x, Boolean y);
  * \return A boolean giving the result of NOT x.
  */
 Boolean not(Boolean x);
-
+/*----------------------------------------------------------------------------*/
+/*--------------------------------FIN DU HEADER-------------------------------*/
+/*----------------------------------------------------------------------------*/
 #endif // __BOOLEAN__

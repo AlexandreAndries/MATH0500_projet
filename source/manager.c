@@ -411,12 +411,12 @@ void manage_operations(unsigned int op, Mtx *L, Mtx *U, Vctr *a, Vctr *x){
     case 1 :
       assert(L != NULL && a != NULL && x != NULL);
 
-      printf("Résolution système triangulaire inférieur - dense\n");
+      printf("\nRésolution système triangulaire inférieur - dense\n");
       outputDense = solve_dense_system(L, x);
       write_vctr_file(outputDense, otptDenseFile);
       free_sparse_vector(outputDense);
 
-      printf("Résolution système triangulaire inférieur - creux\n");
+      printf("\nRésolution système triangulaire inférieur - creux\n");
       outputSparse = solve_sparse_system(L, a);
       write_vctr_file(outputDense, otptSparseFile);
       free_sparse_vector(outputSparse);
@@ -426,22 +426,37 @@ void manage_operations(unsigned int op, Mtx *L, Mtx *U, Vctr *a, Vctr *x){
     case 2 :
       assert(L != NULL && U != NULL);
 
-      printf("Résolution produit matriciel L*U\n");
+      printf("\nRésolution produit matriciel L*U\n");
       outputProduct = product_of_sparse_matrices(L, U);
-      printf("fin\n");
       write_mtx_file(outputProduct, otptProductFile);
-      printf("written\n");
       free_sparse_matrix(outputProduct);
-      printf("freed\n");
 
       break;
 
     case 3 :
+      assert(L != NULL && a != NULL && x != NULL && U != NULL);
+
+      printf("\nRésolution système triangulaire inférieur - dense\n");
+      outputDense = solve_dense_system(L, x);
+      write_vctr_file(outputDense, otptDenseFile);
+      free_sparse_vector(outputDense);
+
+      printf("\nRésolution système triangulaire inférieur - creux\n");
+      outputSparse = solve_sparse_system(L, a);
+      write_vctr_file(outputDense, otptSparseFile);
+      free_sparse_vector(outputSparse);
+
+      printf("\nRésolution produit matriciel L*U\n");
+      outputProduct = product_of_sparse_matrices(L, U);
+      write_mtx_file(outputProduct, otptProductFile);
+      free_sparse_matrix(outputProduct);
 
       break;
 
 
     default :
+      printf("\nOption incorrecte\n");
+
       break;
   }
 }
