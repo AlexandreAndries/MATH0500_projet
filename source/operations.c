@@ -236,7 +236,6 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
     if(i == dim-1){
       idx = B->pCols->vals[i] -SHIFT;
       nextCol = nz_B ;
-      printf("test\n");
     }else{
       idx = B->pCols->vals[i] -SHIFT;
       nextCol = B->pCols->vals[i+1] -SHIFT;
@@ -248,7 +247,7 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
       for(unsigned int l = A->pCols->vals[rowPos] -SHIFT;
         l<A->pCols->vals[rowPos+1]-SHIFT; l++){
 
-        index = A->iRows->vals[l];
+        index = A->iRows->vals[l]-SHIFT;
         if(w[index] == 0){
           w[index] = 1;
           nz++;
@@ -265,14 +264,14 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
   }
 
   for(unsigned int h=0; h<dim; h++){
-    printf("%lf\n", C->pCols->vals[h]);
+    printf("%lf\n", C->pCols->vals[h]);                                         //temporary
   }
 
   /*-----------------------------------------*/
-  /*--- 2. Calculs --------------------------*/
+  /*--- 2. Calculs des non-nuls de C --------*/
   /*-----------------------------------------*/
   C->nz = nz;
-  printf("\nNbr de nz dans C = %u\n", nz);
+  printf("\nNbr de nz dans C = %u\n", nz);                                      //temporary
   count = 0;
 
   C->iRows->vals = (double *)realloc(C->iRows->vals, nz*sizeof(double));
@@ -296,14 +295,14 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
     }
 
     for(unsigned int j = idx; j< nextCol; j++){
-      //here
+
       val = B->xVals->vals[j];
       rowPos = B->iRows->vals[j] -SHIFT;
 
       for(unsigned int l = A->pCols->vals[rowPos] -SHIFT;
         l<A->pCols->vals[rowPos+1]-SHIFT; l++){
 
-        index = A->iRows->vals[l];
+        index = A->iRows->vals[l]-SHIFT;
         val2 = A->xVals->vals[l];
 
         x[index] += val * val2;
@@ -312,7 +311,7 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
 
     for(unsigned int p=0; p<dim; p++){
       if(x[p] != 0){
-        add_at(C->iRows, count, p);
+        add_at(C->iRows, count, p+SHIFT);
         add_at(C->xVals, count, x[p]);
         count++;
       }
@@ -323,31 +322,10 @@ Mtx *product_of_sparse_matrices(Mtx *A, Mtx *B){
     }
   }
 
+  //print
   for(unsigned int v=0; v<nz; v++){
-    printf("iRows = %lf --- xVals = %lf\n", C->iRows->vals[v], C->xVals->vals[v]);
+    printf("iRows = %lf --- xVals = %lf\n", C->iRows->vals[v], C->xVals->vals[v]); //temporary
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   /*------------ Renvoit du résultat final tq C = A*B -------------*/
   free(w);
